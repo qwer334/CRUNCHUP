@@ -1,0 +1,6 @@
+{
+  "name": "CrunchUp Remix - Interactive Prototype",
+  "description": "Interactive, cinematic prototype for CrunchUp Remix: Same Price, New Vibe featuring Duo Canister 3D mechanics, Quick Commerce order simulator, Nano UGC engine, and allocation Sankey.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

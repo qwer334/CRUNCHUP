@@ -1,0 +1,3862 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CrunchUp Remix · Same Price, New Vibe</title>
+    <meta name="description" content="CrunchUp Remix: Same Price, New Vibe. Interactive prototype featuring the Duo Canister 3D mechanics, Quick Commerce order flow for office & campus, Nano UGC engine, and allocation Sankey." />
+    <meta property="og:title" content="CrunchUp Remix · Same Price, New Vibe" />
+    <meta property="og:description" content="Premium look. Affordable price. Built for dorms and desks. Price locked at ₹40." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts: Poppins (Latin) + Noto Sans Devanagari (Hindi) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- GSAP 3.12.5 from cdnjs (allowed, with graceful CSS fallback) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <style>
+      :root {
+        --orange: #E8681F;
+        --cream: #FFF3E6;
+        --warm-tan: #F2C9A0;
+        --deep-brown: #4A2C17;
+        --turmeric-gold: #E3A92B;
+        --chilli-red: #C8321F;
+        --emerald: #0F5C4D;
+        --antique-gold: #C9A24B;
+        --cream-surface: #FDF9F4;
+        --cream-card: #FFFFFF;
+        --border-soft: rgba(74, 44, 23, 0.12);
+        --border-accent: rgba(232, 104, 31, 0.28);
+        --shadow-subtle: 0 4px 20px -2px rgba(74, 44, 23, 0.08);
+        --shadow-elevated: 0 12px 36px -4px rgba(74, 44, 23, 0.14);
+        --font-latin: 'Poppins', system-ui, -apple-system, sans-serif;
+        --font-devanagari: 'Noto Sans Devanagari', 'Poppins', sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-latin);
+        background-color: var(--cream);
+        color: var(--deep-brown);
+        overflow-x: hidden;
+        min-height: 100vh;
+        line-height: 1.5;
+        font-size: 15px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Numbers & Counters Tabular Discipline */
+      .tabular-nums, .num-counter, .metric-val {
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum";
+      }
+
+      /* Focus Ring AA Accessible */
+      button:focus-visible, a:focus-visible {
+        outline: 3px solid var(--orange);
+        outline-offset: 2px;
+      }
+
+      /* Slim Progress Bar Pinned at Top */
+      #topProgressBar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        width: 0%;
+        background: linear-gradient(90deg, var(--turmeric-gold), var(--orange), var(--chilli-red));
+        z-index: 1000;
+        transition: width 350ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      /* Top Bar Zone */
+      header.site-header {
+        position: fixed;
+        top: 4px;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: rgba(255, 243, 230, 0.94);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-soft);
+        z-index: 900;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        gap: 16px;
+      }
+
+      .brand-lockup {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--deep-brown);
+        cursor: pointer;
+      }
+
+      .brand-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--deep-brown);
+        white-space: nowrap;
+      }
+
+      .brand-title span {
+        color: var(--orange);
+      }
+
+      .brand-tag {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--deep-brown);
+        opacity: 0.75;
+        white-space: nowrap;
+        display: none;
+      }
+      @media (min-width: 820px) {
+        .brand-tag { display: inline-block; }
+      }
+
+      /* Navigation Stepper */
+      nav.scene-nav {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        overflow-x: auto;
+        padding: 4px;
+        scrollbar-width: none;
+      }
+      nav.scene-nav::-webkit-scrollbar { display: none; }
+
+      .scene-pill {
+        background: transparent;
+        border: 1px solid transparent;
+        color: var(--deep-brown);
+        font-family: inherit;
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 180ms ease;
+      }
+      .scene-pill:hover {
+        background: rgba(232, 104, 31, 0.1);
+        color: var(--orange);
+      }
+      .scene-pill.active {
+        background: var(--orange);
+        color: #FFFFFF;
+        border-color: var(--orange);
+        box-shadow: 0 2px 8px rgba(232, 104, 31, 0.35);
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      .qc-trigger-btn {
+        background: linear-gradient(135deg, var(--deep-brown), #6B3D1F);
+        color: #FFF3E6;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: transform 180ms ease, box-shadow 180ms ease;
+        box-shadow: 0 2px 10px rgba(74, 44, 23, 0.2);
+        white-space: nowrap;
+      }
+      .qc-trigger-btn:hover {
+        transform: translateY(-1px);
+        background: linear-gradient(135deg, var(--orange), #C8321F);
+        color: #FFFFFF;
+      }
+
+      .audio-btn, .skip-btn {
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid var(--border-soft);
+        color: var(--deep-brown);
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 180ms ease;
+        white-space: nowrap;
+      }
+      .audio-btn:hover, .skip-btn:hover {
+        background: #FFFFFF;
+        border-color: var(--orange);
+        color: var(--orange);
+      }
+
+      /* Scene Viewport Container */
+      #scenesContainer {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        padding-top: 68px;
+        padding-bottom: 76px;
+      }
+
+      /* Scene Section Definition */
+      .scene {
+        position: absolute;
+        top: 68px;
+        left: 0;
+        width: 100%;
+        min-height: calc(100vh - 144px);
+        padding: 24px 20px 48px;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(24px);
+        transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+                    visibility 600ms;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 1320px;
+        margin: 0 auto;
+        right: 0;
+      }
+
+      .scene.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+        position: relative;
+        top: 0;
+      }
+
+      /* Stagger Items inside Scene */
+      .stagger-item {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .scene.active .stagger-item {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Floating Persistent Bottom Controls */
+      .bottom-nav-bar {
+        position: fixed;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 243, 230, 0.94);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid var(--border-soft);
+        border-radius: 999px;
+        padding: 6px 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 8px 30px rgba(74, 44, 23, 0.12);
+        z-index: 950;
+      }
+
+      .nav-btn {
+        background: var(--cream-surface);
+        border: 1px solid var(--border-soft);
+        color: var(--deep-brown);
+        padding: 7px 16px;
+        border-radius: 999px;
+        font-family: inherit;
+        font-size: 0.86rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 180ms ease;
+      }
+      .nav-btn:hover:not(:disabled) {
+        background: var(--orange);
+        color: #FFFFFF;
+        border-color: var(--orange);
+      }
+      .nav-btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+
+      .scene-indicator-text {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--deep-brown);
+        white-space: nowrap;
+        padding: 0 4px;
+      }
+      .scene-indicator-text span {
+        color: var(--orange);
+      }
+
+      .keyboard-hint {
+        font-size: 0.74rem;
+        color: var(--deep-brown);
+        opacity: 0.65;
+        display: none;
+      }
+      @media (min-width: 900px) {
+        .keyboard-hint { display: inline-block; }
+      }
+
+      /* ==========================================================================
+         SCENE 0: PRELOADER (≈3s)
+         ========================================================================== */
+      #scene0 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: var(--cream);
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 24px;
+      }
+
+      .crumbs-particle-field {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .crumb-dot {
+        position: absolute;
+        border-radius: 50%;
+        animation: floatDrift 5s ease-in-out infinite alternate;
+      }
+      @keyframes floatDrift {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(-30px) rotate(35deg); }
+      }
+
+      .preloader-card {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 540px;
+        width: 100%;
+        padding: 40px 24px;
+      }
+
+      .namaste-svg-wrap {
+        width: 320px;
+        height: 100px;
+        margin: 0 auto 16px;
+      }
+      .namaste-stroke {
+        stroke-dasharray: 600;
+        stroke-dashoffset: 600;
+        animation: drawNamaste 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      @keyframes drawNamaste {
+        0% { stroke-dashoffset: 600; fill: transparent; }
+        70% { stroke-dashoffset: 0; fill: transparent; }
+        100% { stroke-dashoffset: 0; fill: var(--orange); }
+      }
+
+      .preloader-wordmark {
+        font-size: 1.6rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        color: var(--deep-brown);
+        margin-bottom: 6px;
+      }
+
+      .preloader-tagline {
+        font-family: var(--font-devanagari);
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--deep-brown);
+        opacity: 0.9;
+        margin-bottom: 28px;
+      }
+
+      .preloader-track {
+        width: 100%;
+        max-width: 340px;
+        height: 8px;
+        background: rgba(74, 44, 23, 0.1);
+        border-radius: 999px;
+        margin: 0 auto 12px;
+        overflow: hidden;
+        position: relative;
+      }
+      .preloader-fill {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--turmeric-gold), var(--orange));
+        border-radius: 999px;
+        transition: width 40ms linear;
+      }
+
+      .preloader-percent {
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--orange);
+      }
+
+      /* Split Curtain Panels for reveal */
+      .split-curtain-left, .split-curtain-right {
+        position: fixed;
+        top: 0;
+        width: 50vw;
+        height: 100vh;
+        background: var(--orange);
+        z-index: 2100;
+        pointer-events: none;
+        transition: transform 700ms cubic-bezier(0.77, 0, 0.175, 1);
+      }
+      .split-curtain-left { left: 0; transform: translateX(-100%); }
+      .split-curtain-right { right: 0; transform: translateX(100%); }
+
+      .curtains-closing .split-curtain-left { transform: translateX(0); }
+      .curtains-closing .split-curtain-right { transform: translateX(0); }
+      .curtains-open .split-curtain-left { transform: translateX(-100%); }
+      .curtains-open .split-curtain-right { transform: translateX(100%); }
+
+      /* ==========================================================================
+         SCENE 1: HERO
+         ========================================================================== */
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        align-items: center;
+        width: 100%;
+      }
+      @media (min-width: 960px) {
+        .hero-grid {
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 48px;
+        }
+      }
+
+      .hero-content {
+        text-align: left;
+      }
+
+      .hero-badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(232, 104, 31, 0.12);
+        color: var(--orange);
+        font-size: 0.85rem;
+        font-weight: 700;
+        padding: 5px 14px;
+        border-radius: 999px;
+        margin-bottom: 18px;
+        border: 1px solid rgba(232, 104, 31, 0.25);
+      }
+
+      .hero-headline {
+        font-size: clamp(2.5rem, 5.2vw, 4.2rem);
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        color: var(--deep-brown);
+        margin-bottom: 18px;
+        text-wrap: balance;
+      }
+
+      .hero-headline .hero-word {
+        display: inline-block;
+        transform: translateY(30px);
+        opacity: 0;
+        animation: wordRise 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      .hero-headline .hero-word:nth-child(1) { animation-delay: 100ms; }
+      .hero-headline .hero-word:nth-child(2) { animation-delay: 220ms; }
+      .hero-headline .hero-word:nth-child(3) { animation-delay: 340ms; }
+      .hero-headline .hero-word:nth-child(4) { animation-delay: 460ms; color: var(--orange); }
+
+      @keyframes wordRise {
+        to { transform: translateY(0); opacity: 1; }
+      }
+
+      .hero-subtitle {
+        font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+        font-weight: 500;
+        color: var(--deep-brown);
+        opacity: 0.88;
+        margin-bottom: 24px;
+        max-width: 600px;
+      }
+
+      .hero-price-anchor {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 20px;
+        background: var(--cream-surface);
+        border: 1px dashed var(--border-accent);
+        border-radius: 14px;
+        margin-bottom: 32px;
+        max-width: 520px;
+      }
+      .price-lock-tag {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: var(--orange);
+      }
+      .price-lock-desc {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--deep-brown);
+        line-height: 1.4;
+      }
+
+      .hero-cta-group {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .primary-cta-btn {
+        background: var(--orange);
+        color: #FFFFFF;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 18px rgba(232, 104, 31, 0.38);
+        transition: all 180ms ease;
+      }
+      .primary-cta-btn:hover {
+        transform: translateY(-2px);
+        background: #D45712;
+        box-shadow: 0 6px 22px rgba(232, 104, 31, 0.45);
+      }
+
+      .secondary-cta-btn {
+        background: transparent;
+        color: var(--deep-brown);
+        border: 1.5px solid var(--border-soft);
+        padding: 13px 22px;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 180ms ease;
+      }
+      .secondary-cta-btn:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+        background: #FFFFFF;
+      }
+
+      /* Hero Duo Canister Float Art */
+      .hero-visual-stage {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 0;
+      }
+
+      .hero-canister-wrapper {
+        animation: gentleFloat 4s ease-in-out infinite alternate;
+        filter: drop-shadow(0 20px 30px rgba(74, 44, 23, 0.18));
+      }
+      @keyframes gentleFloat {
+        0% { transform: translateY(0px) rotate(-1deg); }
+        100% { transform: translateY(-16px) rotate(1.5deg); }
+      }
+
+      /* ==========================================================================
+         SCENE 2: STORYBOARD (Same Moment)
+         ========================================================================== */
+      .storyboard-container {
+        width: 100%;
+        max-width: 1200px;
+      }
+
+      .section-heading-block {
+        text-align: center;
+        margin-bottom: 36px;
+      }
+      .section-kicker {
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: var(--orange);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .section-main-title {
+        font-size: clamp(2rem, 3.8vw, 2.8rem);
+        font-weight: 800;
+        color: var(--deep-brown);
+        letter-spacing: -0.02em;
+        margin-bottom: 10px;
+      }
+      .section-subtext {
+        font-size: 1.05rem;
+        color: var(--deep-brown);
+        opacity: 0.85;
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      .storyboard-row {
+        margin-bottom: 40px;
+      }
+      .row-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .row-tag {
+        font-size: 0.8rem;
+        font-weight: 800;
+        background: var(--deep-brown);
+        color: #FFF3E6;
+        padding: 4px 10px;
+        border-radius: 6px;
+        text-transform: uppercase;
+      }
+      .row-title {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+      }
+
+      .comic-strip-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        position: relative;
+      }
+      @media (min-width: 768px) {
+        .comic-strip-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+      }
+
+      .comic-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 22px;
+        box-shadow: var(--shadow-subtle);
+        transition: transform 200ms ease, box-shadow 200ms ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .comic-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-elevated);
+        border-color: var(--border-accent);
+      }
+
+      .comic-art-frame {
+        background: var(--cream);
+        border-radius: 12px;
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(74, 44, 23, 0.06);
+      }
+
+      .comic-step-num {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: var(--orange);
+        margin-bottom: 4px;
+      }
+      .comic-headline {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+        margin-bottom: 6px;
+      }
+      .comic-description {
+        font-size: 0.9rem;
+        color: var(--deep-brown);
+        opacity: 0.85;
+        line-height: 1.45;
+      }
+
+      .qc-metrics-strip {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+      }
+      .metric-chip-card {
+        background: #FFF8F0;
+        border: 1px solid var(--border-soft);
+        border-radius: 14px;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .metric-chip-val {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: var(--orange);
+      }
+      .metric-chip-label {
+        font-size: 0.86rem;
+        font-weight: 600;
+        color: var(--deep-brown);
+        line-height: 1.35;
+      }
+
+      .storyboard-footnote {
+        text-align: center;
+        font-size: 0.82rem;
+        color: var(--deep-brown);
+        opacity: 0.75;
+        margin-top: 24px;
+      }
+
+      /* ==========================================================================
+         DEDICATED QUICK COMMERCE INTERACTIVE COMPARATOR (OFFICE VS CAMPUS)
+         ========================================================================== */
+      .qc-interactive-spotlight {
+        width: 100%;
+        max-width: 1200px;
+        background: #FFFFFF;
+        border: 2px solid var(--orange);
+        border-radius: 24px;
+        padding: 28px;
+        margin-top: 36px;
+        box-shadow: 0 12px 48px rgba(232, 104, 31, 0.15);
+      }
+
+      .qc-spotlight-top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 28px;
+        border-bottom: 1px solid var(--border-soft);
+        padding-bottom: 20px;
+      }
+
+      .qc-spotlight-title {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: var(--deep-brown);
+      }
+      .qc-spotlight-title span {
+        color: var(--orange);
+      }
+
+      .qc-view-tabs {
+        display: flex;
+        background: var(--cream);
+        padding: 4px;
+        border-radius: 12px;
+        gap: 4px;
+      }
+      .qc-view-tab {
+        background: transparent;
+        border: none;
+        padding: 9px 18px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        color: var(--deep-brown);
+        transition: all 180ms ease;
+      }
+      .qc-view-tab.active {
+        background: #FFFFFF;
+        color: var(--orange);
+        box-shadow: 0 2px 8px rgba(74, 44, 23, 0.08);
+      }
+
+      .qc-simulator-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      @media (min-width: 900px) {
+        .qc-simulator-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .qc-persona-card {
+        background: var(--cream-surface);
+        border: 1px solid var(--border-soft);
+        border-radius: 18px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        transition: all 200ms ease;
+      }
+      .qc-persona-card.highlight {
+        border-color: var(--orange);
+        box-shadow: 0 6px 24px rgba(232, 104, 31, 0.15);
+      }
+
+      .persona-badge-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .persona-tag {
+        font-size: 0.8rem;
+        font-weight: 800;
+        padding: 5px 12px;
+        border-radius: 8px;
+        text-transform: uppercase;
+      }
+      .tag-office { background: #E8F2EE; color: var(--emerald); border: 1px solid #BFE0D7; }
+      .tag-campus { background: #FFF0E6; color: var(--chilli-red); border: 1px solid #FCD4BE; }
+
+      .persona-header-title {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+        margin-bottom: 4px;
+      }
+      .persona-context {
+        font-size: 0.9rem;
+        color: var(--deep-brown);
+        opacity: 0.85;
+        margin-bottom: 18px;
+      }
+
+      .phone-qc-screen {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 4px 16px rgba(74, 44, 23, 0.06);
+        margin-bottom: 18px;
+      }
+
+      .qc-top-delivery-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #FFF8F0;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        color: var(--deep-brown);
+        margin-bottom: 12px;
+      }
+      .qc-top-delivery-bar .eta-badge {
+        color: var(--orange);
+        font-size: 0.9rem;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .qc-product-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 0;
+        border-bottom: 1px dashed var(--border-soft);
+      }
+      .qc-product-img {
+        width: 54px;
+        height: 54px;
+        background: var(--cream);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .qc-product-info {
+        flex: 1;
+      }
+      .qc-product-name {
+        font-size: 0.96rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+      }
+      .qc-product-meta {
+        font-size: 0.8rem;
+        color: var(--deep-brown);
+        opacity: 0.75;
+      }
+      .qc-product-price {
+        font-size: 1.1rem;
+        font-weight: 900;
+        color: var(--orange);
+      }
+
+      .qc-order-summary-box {
+        margin-top: 12px;
+        padding: 12px;
+        background: #FAF6F0;
+        border-radius: 10px;
+      }
+      .qc-bill-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.86rem;
+        margin-bottom: 4px;
+        color: var(--deep-brown);
+      }
+      .qc-bill-total {
+        font-weight: 900;
+        font-size: 0.98rem;
+        border-top: 1px solid var(--border-soft);
+        padding-top: 6px;
+        margin-top: 6px;
+        color: var(--deep-brown);
+      }
+
+      .split-pay-action-box {
+        background: #F3FAF7;
+        border: 1px solid #C4E8DC;
+        border-radius: 12px;
+        padding: 14px;
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .split-pay-text {
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: var(--emerald);
+      }
+      .split-pay-btn {
+        background: var(--emerald);
+        color: #FFFFFF;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: opacity 180ms, transform 180ms;
+      }
+      .split-pay-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+
+      .qc-bullets-list {
+        margin-top: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .qc-bullet-item {
+        font-size: 0.88rem;
+        color: var(--deep-brown);
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .qc-bullet-icon {
+        color: var(--orange);
+        font-weight: 900;
+        flex-shrink: 0;
+      }
+
+      .live-tracking-box {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 12px;
+        padding: 14px;
+        margin-top: 16px;
+      }
+      .tracking-steps {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-top: 10px;
+      }
+      .tracking-steps::before {
+        content: '';
+        position: absolute;
+        top: 12px;
+        left: 20px;
+        right: 20px;
+        height: 2px;
+        background: #E8D9C8;
+        z-index: 1;
+      }
+      .tracking-step {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--deep-brown);
+        opacity: 0.5;
+        width: 70px;
+        text-align: center;
+      }
+      .tracking-step.done {
+        opacity: 1;
+        color: var(--orange);
+      }
+      .tracking-dot {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #E8D9C8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: #FFFFFF;
+        margin-bottom: 6px;
+      }
+      .tracking-step.done .tracking-dot {
+        background: var(--orange);
+      }
+
+      /* In-App Interactive Toast / Modal Notice */
+      #inAppModalOverlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(74, 44, 23, 0.45);
+        backdrop-filter: blur(4px);
+        z-index: 3000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 220ms ease;
+      }
+      #inAppModalOverlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .in-app-modal-card {
+        background: #FFFFFF;
+        border: 2px solid var(--orange);
+        border-radius: 20px;
+        padding: 28px;
+        max-width: 480px;
+        width: 100%;
+        box-shadow: 0 16px 48px rgba(74, 44, 23, 0.2);
+        transform: scale(0.92);
+        transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      #inAppModalOverlay.active .in-app-modal-card {
+        transform: scale(1);
+      }
+
+      .modal-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+      .modal-header-title {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+      }
+      .modal-close-btn {
+        background: var(--cream);
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: var(--deep-brown);
+        cursor: pointer;
+      }
+      .modal-body-content {
+        font-size: 0.95rem;
+        color: var(--deep-brown);
+        line-height: 1.5;
+        margin-bottom: 20px;
+      }
+      .modal-action-btn {
+        width: 100%;
+        background: var(--orange);
+        color: #FFFFFF;
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      /* ==========================================================================
+         SCENE 3: THE DUO CANISTER (CINEMATIC HERO)
+         ========================================================================== */
+      .canister-stage-wrapper {
+        width: 100%;
+        max-width: 1100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .stage-controls-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .stage-title-wrap {
+        text-align: left;
+      }
+      .stage-title {
+        font-size: 1.65rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+      }
+      .stage-sub {
+        font-size: 0.92rem;
+        color: var(--deep-brown);
+        opacity: 0.85;
+      }
+
+      .replay-stage-btn {
+        background: #FFFFFF;
+        border: 1.5px solid var(--border-soft);
+        color: var(--deep-brown);
+        padding: 8px 18px;
+        border-radius: 999px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 180ms ease;
+      }
+      .replay-stage-btn:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+        background: var(--cream);
+      }
+
+      .cinematic-canister-stage {
+        position: relative;
+        width: 100%;
+        max-width: 960px;
+        height: 380px;
+        background: radial-gradient(circle at 50% 60%, #FFFFFF 0%, var(--cream) 70%);
+        border: 1px solid var(--border-soft);
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1200px;
+        overflow: hidden;
+        box-shadow: var(--shadow-subtle);
+      }
+
+      #cinematicFlash {
+        position: absolute;
+        inset: 0;
+        background: #FFFFFF;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 100;
+        transition: opacity 180ms ease;
+      }
+
+      .screen-shake {
+        animation: screenShake 180ms ease-in-out;
+      }
+      @keyframes screenShake {
+        0%, 100% { transform: translate(0, 0); }
+        25% { transform: translate(-4px, 2px); }
+        50% { transform: translate(4px, -3px); }
+        75% { transform: translate(-2px, 3px); }
+      }
+
+      .floor-shadow {
+        position: absolute;
+        bottom: 50px;
+        width: 440px;
+        height: 26px;
+        background: radial-gradient(ellipse at center, rgba(74, 44, 23, 0.28) 0%, rgba(74, 44, 23, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        transition: all 500ms ease;
+      }
+
+      .canister-rig {
+        position: relative;
+        width: 480px;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform-style: preserve-3d;
+        transform: scale(0.8) rotateY(-6deg) rotateX(3deg);
+        transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+        z-index: 10;
+      }
+
+      .canister-half {
+        position: relative;
+        width: 210px;
+        height: 120px;
+        transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .half-left { transform-origin: right center; }
+      .half-right { transform-origin: left center; }
+
+      .canister-split .half-left { transform: translateX(-55px) rotate(-3deg); }
+      .canister-split .half-right { transform: translateX(55px) rotate(3deg); }
+
+      .canister-swapped .half-left { transform: translateX(110px) translateY(-15px) rotate(4deg); }
+      .canister-swapped .half-right { transform: translateX(-110px) translateY(15px) rotate(-4deg); }
+
+      .lid-left, .lid-right {
+        position: absolute;
+        width: 24px;
+        height: 124px;
+        background: #FDF9F2;
+        border: 2px solid #D6C2AA;
+        border-radius: 12px;
+        top: -2px;
+        transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 400ms ease;
+        z-index: 15;
+      }
+      .lid-left { left: -12px; }
+      .lid-right { right: -12px; }
+
+      .lids-popped .lid-left { transform: translateX(-65px) translateY(-25px) rotate(-30deg); opacity: 0.1; }
+      .lids-popped .lid-right { transform: translateX(65px) translateY(-25px) rotate(30deg); opacity: 0.1; }
+
+      .faceless-person {
+        position: absolute;
+        bottom: 30px;
+        width: 140px;
+        height: 200px;
+        opacity: 0;
+        transition: all 600ms cubic-bezier(0.22, 1, 0.36, 1);
+        z-index: 5;
+        pointer-events: none;
+      }
+      .person-left { left: 20px; transform: translateX(-50px); }
+      .person-right { right: 20px; transform: translateX(50px); }
+
+      .people-visible .person-left { opacity: 1; transform: translateX(0); }
+      .people-visible .person-right { opacity: 1; transform: translateX(0); }
+
+      .sharing-arc-wrap {
+        position: absolute;
+        top: 25px;
+        width: 320px;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 500ms ease;
+        pointer-events: none;
+        z-index: 20;
+      }
+      .sharing-visible .sharing-arc-wrap { opacity: 1; }
+
+      .sharing-micro-copy {
+        font-family: var(--font-devanagari);
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--orange);
+        background: #FFFFFF;
+        padding: 4px 16px;
+        border-radius: 999px;
+        border: 1px solid var(--border-accent);
+        box-shadow: 0 2px 10px rgba(232, 104, 31, 0.15);
+        margin-top: 4px;
+      }
+
+      .swap-flavours-btn {
+        margin-top: 20px;
+        background: var(--orange);
+        color: #FFFFFF;
+        border: none;
+        padding: 13px 28px;
+        border-radius: 999px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 16px rgba(232, 104, 31, 0.35);
+        transition: all 180ms ease;
+        z-index: 30;
+      }
+      .swap-flavours-btn:hover {
+        transform: scale(1.04);
+        background: #D45712;
+      }
+
+      .impact-cards-strip {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px;
+        width: 100%;
+        margin-top: 32px;
+        position: relative;
+      }
+      .impact-cards-strip::before {
+        content: '';
+        position: absolute;
+        top: 26px;
+        left: 30px;
+        right: 30px;
+        height: 2px;
+        background: var(--orange);
+        opacity: 0.3;
+        z-index: 1;
+      }
+
+      .impact-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 14px;
+        padding: 18px 14px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        box-shadow: var(--shadow-subtle);
+        transition: transform 200ms ease;
+      }
+      .impact-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--orange);
+      }
+
+      .impact-card-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--cream);
+        color: var(--orange);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        border: 1px solid var(--border-accent);
+      }
+
+      .impact-card-text {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--deep-brown);
+        line-height: 1.35;
+      }
+
+      /* ==========================================================================
+         SCENE 4: VIBE FLAVOURS + K-SERIES
+         ========================================================================== */
+      .flavours-section-wrap {
+        width: 100%;
+        max-width: 1100px;
+      }
+
+      .pouches-3d-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-bottom: 36px;
+      }
+      @media (min-width: 768px) {
+        .pouches-3d-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+      }
+
+      .pouch-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 18px;
+        padding: 24px 20px;
+        text-align: center;
+        position: relative;
+        transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease;
+        cursor: pointer;
+        perspective: 800px;
+      }
+      .pouch-card:hover {
+        transform: translateY(-6px) rotateY(-3deg);
+        box-shadow: var(--shadow-elevated);
+      }
+
+      .pouch-hero-delulu {
+        border-color: var(--chilli-red);
+        animation: subtlePulse 3s ease-in-out infinite alternate;
+      }
+      @keyframes subtlePulse {
+        0% { box-shadow: 0 4px 18px rgba(200, 50, 31, 0.12); }
+        100% { box-shadow: 0 10px 30px rgba(200, 50, 31, 0.3); }
+      }
+
+      .pouch-art-box {
+        height: 170px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+      }
+
+      .pouch-title {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+        margin-bottom: 6px;
+      }
+      .pouch-taste-notes {
+        font-size: 0.88rem;
+        color: var(--deep-brown);
+        opacity: 0.85;
+        margin-bottom: 14px;
+      }
+
+      .pouch-meta-tags {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--deep-brown);
+        opacity: 0.85;
+      }
+
+      .k-series-formal-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 28px;
+        position: relative;
+        overflow: hidden;
+      }
+      .k-series-formal-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--chilli-red);
+      }
+
+      .k-series-badge {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: var(--chilli-red);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+
+      .k-series-title {
+        font-size: clamp(1.4rem, 2.8vw, 1.9rem);
+        font-weight: 800;
+        color: var(--deep-brown);
+        letter-spacing: -0.01em;
+        margin-bottom: 8px;
+      }
+
+      .k-series-caption {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--deep-brown);
+        opacity: 0.85;
+      }
+
+      /* ==========================================================================
+         SCENE 5: NANO UGC ENGINE (ANIMATED)
+         ========================================================================== */
+      .ugc-engine-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        width: 100%;
+        max-width: 1150px;
+        align-items: center;
+      }
+      @media (min-width: 900px) {
+        .ugc-engine-grid {
+          grid-template-columns: 0.85fr 1.15fr;
+        }
+      }
+
+      .ugc-phone-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .ugc-phone-frame {
+        width: 280px;
+        height: 480px;
+        background: #FFFFFF;
+        border: 8px solid var(--deep-brown);
+        border-radius: 36px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: var(--shadow-elevated);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .phone-notch {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 110px;
+        height: 18px;
+        background: var(--deep-brown);
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        z-index: 20;
+      }
+
+      .reel-media-area {
+        flex: 1;
+        background: linear-gradient(180deg, #F9EDE1 0%, #F5DEC9 100%);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .reel-progress-track {
+        position: absolute;
+        top: 24px;
+        left: 14px;
+        right: 14px;
+        height: 3px;
+        background: rgba(74, 44, 23, 0.2);
+        border-radius: 999px;
+        z-index: 10;
+        overflow: hidden;
+      }
+      .reel-progress-bar {
+        width: 0%;
+        height: 100%;
+        background: var(--orange);
+        animation: reelProgressLoop 4s linear infinite;
+      }
+      @keyframes reelProgressLoop {
+        0% { width: 0%; }
+        100% { width: 100%; }
+      }
+
+      .floating-hearts-layer {
+        position: absolute;
+        right: 16px;
+        bottom: 80px;
+        width: 40px;
+        height: 150px;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .heart-float {
+        position: absolute;
+        color: var(--chilli-red);
+        font-size: 18px;
+        animation: heartRise 2.5s ease-out infinite;
+        opacity: 0;
+      }
+      .heart-float:nth-child(1) { left: 4px; animation-delay: 0.2s; }
+      .heart-float:nth-child(2) { left: 16px; animation-delay: 1.1s; font-size: 22px; }
+      .heart-float:nth-child(3) { left: 8px; animation-delay: 1.9s; }
+
+      @keyframes heartRise {
+        0% { transform: translateY(120px) scale(0.6); opacity: 0; }
+        20% { opacity: 0.9; }
+        80% { opacity: 0.8; }
+        100% { transform: translateY(0px) scale(1.1); opacity: 0; }
+      }
+
+      .comment-bubble {
+        position: absolute;
+        left: 14px;
+        bottom: 24px;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(8px);
+        padding: 6px 12px;
+        border-radius: 12px;
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--deep-brown);
+        box-shadow: 0 4px 12px rgba(74, 44, 23, 0.1);
+        animation: bubblePop 4s ease-in-out infinite;
+        max-width: 210px;
+      }
+      @keyframes bubblePop {
+        0%, 100% { opacity: 0; transform: translateY(10px); }
+        15%, 85% { opacity: 1; transform: translateY(0); }
+      }
+
+      .creator-persona-indicator {
+        margin-top: 12px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--orange);
+      }
+
+      .venn-conversion-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .venn-diagram-svg-wrap {
+        width: 100%;
+        max-width: 440px;
+        height: 280px;
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .venn-circle {
+        transition: transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform-origin: center;
+      }
+
+      .ugc-conversion-stream-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 20px;
+        width: 100%;
+        box-shadow: var(--shadow-subtle);
+      }
+
+      .stream-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .stream-title {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+      }
+      .orders-counter-chip {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: var(--orange);
+        background: var(--cream);
+        padding: 4px 14px;
+        border-radius: 8px;
+        border: 1px solid var(--border-accent);
+      }
+
+      .dots-stream-track {
+        height: 48px;
+        background: var(--cream-surface);
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        border: 1px dashed var(--border-soft);
+      }
+
+      .ugc-budget-math-chip {
+        margin-top: 14px;
+        background: #FFF8F0;
+        border: 1px solid var(--border-accent);
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--deep-brown);
+        display: inline-block;
+      }
+
+      /* ==========================================================================
+         SCENE 6: WHERE THE ₹3,00,000 GOES (SANKEY)
+         ========================================================================== */
+      .sankey-section-wrap {
+        width: 100%;
+        max-width: 1100px;
+      }
+
+      .sankey-container-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: var(--shadow-subtle);
+        position: relative;
+      }
+
+      .sankey-top-stats {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--border-soft);
+        padding-bottom: 16px;
+      }
+
+      .budget-total-box {
+        font-size: 1.9rem;
+        font-weight: 900;
+        color: var(--deep-brown);
+      }
+      .budget-total-box span {
+        color: var(--orange);
+      }
+
+      .sankey-svg-wrapper {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .sankey-band {
+        opacity: 0.84;
+        transition: opacity 180ms ease, filter 180ms ease;
+        cursor: pointer;
+      }
+      .sankey-band:hover {
+        opacity: 1;
+        filter: brightness(1.15) drop-shadow(0 4px 8px rgba(74, 44, 23, 0.2));
+      }
+
+      #sankeyTooltip {
+        position: absolute;
+        background: var(--deep-brown);
+        color: #FFF3E6;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 120ms ease;
+        z-index: 100;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        white-space: nowrap;
+      }
+
+      /* ==========================================================================
+         SCENE 7: LIMITED EDITION COLLAB
+         ========================================================================== */
+      .collab-section-wrap {
+        width: 100%;
+        max-width: 1100px;
+      }
+
+      .collab-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 28px;
+        align-items: center;
+      }
+      @media (min-width: 900px) {
+        .collab-grid {
+          grid-template-columns: 0.9fr 1.1fr;
+        }
+      }
+
+      .collab-canister-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px;
+        text-align: center;
+        box-shadow: var(--shadow-subtle);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .licence-pending-tag {
+        display: inline-block;
+        background: #FFF0E6;
+        color: var(--chilli-red);
+        border: 1px solid #FCD4BE;
+        font-size: 0.76rem;
+        font-weight: 800;
+        padding: 4px 12px;
+        border-radius: 6px;
+        letter-spacing: 0.06em;
+        margin-bottom: 14px;
+      }
+
+      .light-sweep-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+        background-size: 200% 100%;
+        animation: lightSweepLoop 4s infinite linear;
+        pointer-events: none;
+      }
+      @keyframes lightSweepLoop {
+        0% { background-position: -150% 0; }
+        100% { background-position: 150% 0; }
+      }
+
+      .collab-timeline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--cream);
+        border: 1px solid var(--border-soft);
+        border-radius: 12px;
+        padding: 12px 18px;
+        margin-top: 18px;
+      }
+      .timeline-node {
+        font-size: 0.84rem;
+        font-weight: 700;
+        color: var(--deep-brown);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .timeline-node.highlight {
+        color: var(--emerald);
+      }
+
+      .unit-economics-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: var(--shadow-subtle);
+      }
+
+      .economics-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .economics-table tr {
+        border-bottom: 1px solid var(--border-soft);
+      }
+      .economics-table tr:last-child {
+        border-bottom: none;
+      }
+      .economics-table td {
+        padding: 10px 8px;
+        font-size: 0.9rem;
+      }
+      .economics-table td:first-child {
+        font-weight: 600;
+        color: var(--deep-brown);
+        opacity: 0.85;
+      }
+      .economics-table td:last-child {
+        text-align: right;
+        font-weight: 800;
+        color: var(--deep-brown);
+      }
+      .row-net-positive td:last-child {
+        color: var(--emerald);
+        font-size: 1.15rem;
+      }
+
+      /* ==========================================================================
+         SCENE 8: THE RESULT
+         ========================================================================== */
+      .results-section-wrap {
+        width: 100%;
+        max-width: 1100px;
+      }
+
+      .results-metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .result-metric-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 22px 18px;
+        box-shadow: var(--shadow-subtle);
+        transition: transform 200ms ease;
+      }
+      .result-metric-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--orange);
+      }
+
+      .metric-kicker-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--deep-brown);
+        opacity: 0.7;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+      }
+
+      .metric-before-after {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+      .val-before {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--deep-brown);
+        opacity: 0.45;
+        text-decoration: line-through;
+      }
+      .val-arrow {
+        color: var(--orange);
+        font-weight: 800;
+      }
+      .val-after {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: var(--orange);
+      }
+
+      .metric-tag-note {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--emerald);
+      }
+
+      .chart-container-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: var(--shadow-subtle);
+        margin-bottom: 24px;
+      }
+
+      .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .chart-title {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+      }
+
+      .chart-svg-wrap {
+        width: 100%;
+        height: 180px;
+      }
+
+      .locked-price-tagline-box {
+        text-align: center;
+        background: var(--cream-surface);
+        border: 1.5px dashed var(--border-accent);
+        border-radius: 14px;
+        padding: 16px 24px;
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+      }
+      .locked-price-tagline-box span {
+        color: var(--orange);
+      }
+
+      /* ==========================================================================
+         SCENE 9: OUTRO
+         ========================================================================== */
+      .outro-card {
+        text-align: center;
+        max-width: 600px;
+        padding: 40px 24px;
+      }
+
+      .dhanyawad-svg-wrap {
+        width: 320px;
+        height: 100px;
+        margin: 0 auto 20px;
+      }
+      .dhanyawad-stroke {
+        stroke-dasharray: 600;
+        stroke-dashoffset: 600;
+        animation: drawDhanyawad 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      @keyframes drawDhanyawad {
+        0% { stroke-dashoffset: 600; fill: transparent; }
+        70% { stroke-dashoffset: 0; fill: transparent; }
+        100% { stroke-dashoffset: 0; fill: var(--deep-brown); }
+      }
+
+      .outro-title {
+        font-size: 1.9rem;
+        font-weight: 800;
+        color: var(--deep-brown);
+        margin-bottom: 8px;
+      }
+
+      .outro-sub {
+        font-size: 1.05rem;
+        color: var(--deep-brown);
+        opacity: 0.85;
+        margin-bottom: 28px;
+      }
+
+      .replay-story-cta {
+        background: var(--orange);
+        color: #FFFFFF;
+        border: none;
+        padding: 14px 34px;
+        border-radius: 999px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 18px rgba(232, 104, 31, 0.35);
+        transition: transform 180ms ease;
+      }
+      .replay-story-cta:hover {
+        transform: scale(1.04);
+        background: #D45712;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, ::before, ::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+        .hero-headline .hero-word {
+          transform: none !important;
+          opacity: 1 !important;
+        }
+        .namaste-stroke, .dhanyawad-stroke {
+          stroke-dashoffset: 0 !important;
+          fill: var(--orange) !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Progress Bar -->
+    <div id="topProgressBar" role="progressbar" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"></div>
+
+    <!-- Header Contract -->
+    <header class="site-header">
+      <div class="brand-lockup" onclick="goToScene(1)" title="Go to Hero Scene">
+        <span class="brand-title">CrunchUp <span>Remix</span></span>
+        <span class="brand-tag">· Same Price, New Vibe</span>
+      </div>
+
+      <!-- Navigation Stepper -->
+      <nav class="scene-nav" aria-label="Scene navigation">
+        <button class="scene-pill" onclick="goToScene(1)">1. Hero</button>
+        <button class="scene-pill" onclick="goToScene(2)">2. Storyboard</button>
+        <button class="scene-pill" onclick="goToScene(3)">3. Duo Canister</button>
+        <button class="scene-pill" onclick="goToScene(4)">4. Flavours</button>
+        <button class="scene-pill" onclick="goToScene(5)">5. UGC Engine</button>
+        <button class="scene-pill" onclick="goToScene(6)">6. ₹3L Budget</button>
+        <button class="scene-pill" onclick="goToScene(7)">7. Limited Edition</button>
+        <button class="scene-pill" onclick="goToScene(8)">8. Results</button>
+        <button class="scene-pill" onclick="goToScene(9)">9. Outro</button>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Dedicated Quick Commerce Trigger -->
+        <button class="qc-trigger-btn" onclick="scrollToQCExperience()" title="Explore Quick Commerce simulator">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>Office vs Campus QC</span>
+        </button>
+
+        <button class="audio-btn" id="audioToggleBtn" onclick="toggleAudio()" title="Toggle ambient feedback sound">
+          <span id="audioIcon">🔈</span>
+          <span id="audioText">Sound</span>
+        </button>
+
+        <button class="skip-btn" id="skipIntroBtn" onclick="skipIntro()" title="Skip into interactive story">
+          Skip intro →
+        </button>
+      </div>
+    </header>
+
+    <!-- Split Curtain Panels for Scene Reveal -->
+    <div class="split-curtain-left" id="curtainLeft"></div>
+    <div class="split-curtain-right" id="curtainRight"></div>
+
+    <!-- In-App Modal Dialog (Zero window.alert) -->
+    <div id="inAppModalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="in-app-modal-card">
+        <div class="modal-header-row">
+          <h3 class="modal-header-title" id="modalTitle">Quick Commerce Notification</h3>
+          <button class="modal-close-btn" onclick="closeInAppModal()" aria-label="Close modal">✕</button>
+        </div>
+        <div class="modal-body-content" id="modalBody">Modal content goes here.</div>
+        <button class="modal-action-btn" onclick="closeInAppModal()">Got it</button>
+      </div>
+    </div>
+
+    <!-- Main Viewport Container -->
+    <main id="scenesContainer">
+
+      <!-- ======================================================================
+           SCENE 0: PRELOADER (≈3s)
+           ====================================================================== -->
+      <section class="scene active" id="scene0" aria-label="Scene 0: Preloader">
+        <div class="crumbs-particle-field" id="crumbsField"></div>
+
+        <div class="preloader-card">
+          <!-- Big Devanagari "नमस्ते" Vector Drawing -->
+          <div class="namaste-svg-wrap">
+            <svg viewBox="0 0 320 100" width="100%" height="100%">
+              <text x="50%" y="72" text-anchor="middle" font-family="'Noto Sans Devanagari', sans-serif" font-size="72" font-weight="900" class="namaste-stroke" stroke="#E8681F" stroke-width="2" fill="transparent">नमस्ते</text>
+            </svg>
+          </div>
+
+          <div class="preloader-wordmark">CrunchUp</div>
+          <div class="preloader-tagline">CrunchUp में आपका स्वागत है</div>
+
+          <div class="preloader-track">
+            <div class="preloader-fill" id="preloaderFill"></div>
+          </div>
+          <div class="preloader-percent tabular-nums" id="preloaderPercent">0%</div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 1: HERO
+           ====================================================================== -->
+      <section class="scene" id="scene1" aria-label="Scene 1: Hero">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="hero-badge-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>The Next-Gen Snack Reinvention</span>
+            </div>
+
+            <h1 class="hero-headline">
+              <span class="hero-word">Same</span>
+              <span class="hero-word">Price,</span>
+              <span class="hero-word">New</span>
+              <span class="hero-word">Vibe</span>
+            </h1>
+
+            <p class="hero-subtitle">
+              Premium look. Affordable price. Built for dorms and desks.
+            </p>
+
+            <div class="hero-price-anchor">
+              <div class="price-lock-tag tabular-nums">₹40</div>
+              <div class="price-lock-desc">
+                Price forever locked at ₹40. All value generated from format, flavour and community.
+              </div>
+            </div>
+
+            <div class="hero-cta-group">
+              <button class="primary-cta-btn" onclick="goToScene(2)">
+                <span>Start the story</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+              </button>
+
+              <button class="secondary-cta-btn" onclick="goToScene(3)">
+                <span>Explore Duo Canister 3D</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Hero Vector Canister Float Art -->
+          <div class="hero-visual-stage">
+            <div class="hero-canister-wrapper">
+              <svg width="380" height="200" viewBox="0 0 380 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="190" cy="180" rx="140" ry="12" fill="rgba(74, 44, 23, 0.15)"/>
+                
+                <!-- Left Half: Turmeric Gold Tube -->
+                <path d="M40 50 C40 40, 50 35, 60 35 L190 35 L190 145 L60 145 C50 145, 40 140, 40 130 Z" fill="#E3A92B"/>
+                <rect x="40" y="38" width="8" height="104" rx="4" fill="#FDF8F0" opacity="0.6"/>
+                <text x="115" y="94" font-family="'Poppins', sans-serif" font-size="12" font-weight="800" fill="#4A2C17" text-anchor="middle" letter-spacing="1">MASALA</text>
+
+                <!-- Right Half: Chilli Red Tube -->
+                <path d="M190 35 L320 35 C330 35, 340 40, 340 50 L340 130 C340 140, 330 145, 320 145 L190 145 Z" fill="#C8321F"/>
+                <rect x="332" y="38" width="8" height="104" rx="4" fill="#FDF8F0" opacity="0.6"/>
+                <text x="265" y="94" font-family="'Poppins', sans-serif" font-size="12" font-weight="800" fill="#FFF3E6" text-anchor="middle" letter-spacing="1">DELULU</text>
+
+                <!-- Center Band: Emerald & Gold -->
+                <rect x="180" y="33" width="20" height="114" rx="3" fill="#0F5C4D" stroke="#C9A24B" stroke-width="2"/>
+                <text x="190" y="93" font-family="'Poppins', sans-serif" font-size="8" font-weight="900" fill="#FFF3E6" text-anchor="middle" transform="rotate(-90 190 93)" letter-spacing="1">DUO</text>
+
+                <!-- Left Ivory End Lid -->
+                <rect x="28" y="32" width="16" height="116" rx="8" fill="#FFFDF8" stroke="#D8C5AF" stroke-width="2"/>
+                <!-- Right Ivory End Lid -->
+                <rect x="336" y="32" width="16" height="116" rx="8" fill="#FFFDF8" stroke="#D8C5AF" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 2: SAME MOMENT (STORYBOARD) + QUICK COMMERCE SIMULATOR
+           ====================================================================== -->
+      <section class="scene" id="scene2" aria-label="Scene 2: Storyboard">
+        <div class="storyboard-container">
+          <div class="section-heading-block">
+            <div class="section-kicker">Behavioral Storyboard</div>
+            <h2 class="section-main-title">One Shared Moment, Two Daily Lives</h2>
+            <p class="section-subtext">
+              How students between lectures and office teams between meetings find the same high-velocity snacking ritual on 10-minute Quick Commerce.
+            </p>
+          </div>
+
+          <!-- Row 1: Less Thinking Time -->
+          <div class="storyboard-row stagger-item">
+            <div class="row-header">
+              <span class="row-tag">Stage 01</span>
+              <h3 class="row-title">Less thinking time</h3>
+            </div>
+
+            <div class="comic-strip-grid">
+              <div class="comic-card">
+                <div class="comic-art-frame">
+                  <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+                    <rect x="10" y="65" width="100" height="15" rx="3" fill="#F2C9A0"/>
+                    <rect x="25" y="50" width="85" height="15" rx="3" fill="#E8D2BE"/>
+                    <circle cx="55" cy="28" r="10" fill="#E8681F"/>
+                    <path d="M45 42 C45 38 65 38 65 42 L68 62 L42 62 Z" fill="#4A2C17"/>
+                    <rect x="64" y="44" width="8" height="14" rx="2" fill="#FFFFFF" stroke="#0F5C4D" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <div class="comic-step-num">FRAME 1</div>
+                <h4 class="comic-headline">Student between lectures</h4>
+                <p class="comic-description">15-minute gap between classes. Hungry, restless, checks phone for an instant snack drop.</p>
+              </div>
+
+              <div class="comic-card">
+                <div class="comic-art-frame">
+                  <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+                    <rect x="15" y="60" width="90" height="8" rx="2" fill="#4A2C17"/>
+                    <rect x="25" y="68" width="6" height="18" fill="#4A2C17"/>
+                    <rect x="89" y="68" width="6" height="18" fill="#4A2C17"/>
+                    <rect x="35" y="48" width="28" height="12" rx="2" fill="#C9A24B"/>
+                    <circle cx="80" cy="26" r="10" fill="#F2C9A0"/>
+                    <path d="M70 40 C70 36 90 36 90 40 L92 60 L68 60 Z" fill="#0F5C4D"/>
+                    <rect x="66" y="44" width="7" height="12" rx="2" fill="#FFFFFF" stroke="#E8681F" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <div class="comic-step-num">FRAME 2</div>
+                <h4 class="comic-headline">Office worker between meetings</h4>
+                <p class="comic-description">Back-to-back video sprints. Slump at 4:15 PM. Needs zero-mess fuel with a desk colleague.</p>
+              </div>
+
+              <div class="comic-card">
+                <div class="comic-art-frame">
+                  <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+                    <rect x="35" y="10" width="50" height="72" rx="8" fill="#FFFFFF" stroke="#4A2C17" stroke-width="2"/>
+                    <rect x="42" y="18" width="36" height="12" rx="3" fill="#E8681F"/>
+                    <text x="60" y="27" font-size="6" font-weight="900" fill="#FFFFFF" text-anchor="middle">10 MINS</text>
+                    <rect x="42" y="35" width="22" height="6" rx="2" fill="#F2C9A0"/>
+                    <rect x="42" y="44" width="36" height="16" rx="3" fill="#FFF3E6"/>
+                    <circle cx="50" cy="52" r="5" fill="#E3A92B"/>
+                    <circle cx="68" cy="52" r="5" fill="#C8321F"/>
+                  </svg>
+                </div>
+                <div class="comic-step-num">FRAME 3</div>
+                <h4 class="comic-headline">Both open Quick Commerce</h4>
+                <p class="comic-description">Instant high-velocity search: "CrunchUp" or "crisps under 50". Zero hesitation.</p>
+              </div>
+            </div>
+
+            <div class="qc-metrics-strip">
+              <div class="metric-chip-card">
+                <div class="metric-chip-val tabular-nums">9M+</div>
+                <div class="metric-chip-label">Daily Quick Commerce orders across top metro clusters</div>
+              </div>
+              <div class="metric-chip-card">
+                <div class="metric-chip-val tabular-nums">≈ 33%</div>
+                <div class="metric-chip-label">Gen Z share of all quick-commerce shoppers</div>
+              </div>
+              <div class="metric-chip-card">
+                <div class="metric-chip-val tabular-nums">~60%</div>
+                <div class="metric-chip-label">QC orders start directly from in-app search query</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Same Tool, Different Format -->
+          <div class="storyboard-row stagger-item">
+            <div class="row-header">
+              <span class="row-tag">Stage 02</span>
+              <h3 class="row-title">Same tool, different format</h3>
+            </div>
+
+            <div class="comic-strip-grid">
+              <div class="comic-card">
+                <div class="comic-art-frame">
+                  <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+                    <rect x="25" y="15" width="70" height="60" rx="8" fill="#FFFFFF" stroke="#0F5C4D" stroke-width="1.5"/>
+                    <rect x="32" y="24" width="40" height="10" rx="4" fill="#FFF3E6"/>
+                    <text x="52" y="31" font-size="5" font-weight="700" fill="#4A2C17" text-anchor="middle">Best crunch under ₹50?</text>
+                    <rect x="45" y="40" width="44" height="12" rx="4" fill="#0F5C4D"/>
+                    <text x="67" y="48" font-size="5" font-weight="700" fill="#FFFFFF" text-anchor="middle">Try CrunchUp Duo!</text>
+                  </svg>
+                </div>
+                <div class="comic-step-num">FRAME 4</div>
+                <h4 class="comic-headline">Both ask an AI assistant</h4>
+                <p class="comic-description">Conversational discovery: "Suggest a bold, non-oily snack for sharing right now."</p>
+              </div>
+
+              <div class="comic-card">
+                <div class="comic-art-frame">
+                  <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+                    <path d="M45 20 L75 20 L80 75 L40 75 Z" fill="#E8681F"/>
+                    <rect x="43" y="18" width="34" height="4" rx="2" fill="#C8321F"/>
+                    <circle cx="60" cy="46" r="14" fill="#FFF3E6"/>
+                    <text x="60" y="49" font-size="7" font-weight="900" fill="#E8681F" text-anchor="middle">₹40</text>
+                  </svg>
+                </div>
+                <div class="comic-step-num">FRAME 5</div>
+                <h4 class="comic-headline">Students: Snack pouch</h4>
+                <p class="comic-description">Casual, pocketable, bold punch for late-night hostel binge sessions and lecture bags.</p>
+              </div>
+
+              <div class="comic-card">
+                <div class="comic-art-frame">
+                  <svg width="120" height="90" viewBox="0 0 120 90" fill="none">
+                    <rect x="25" y="32" width="35" height="26" rx="4" fill="#E3A92B"/>
+                    <rect x="60" y="32" width="35" height="26" rx="4" fill="#C8321F"/>
+                    <rect x="56" y="30" width="8" height="30" rx="2" fill="#0F5C4D"/>
+                    <circle cx="25" cy="45" r="4" fill="#FFFFFF"/>
+                    <circle cx="95" cy="45" r="4" fill="#FFFFFF"/>
+                  </svg>
+                </div>
+                <div class="comic-step-num">FRAME 6</div>
+                <h4 class="comic-headline">Offices: Duo Canister</h4>
+                <p class="comic-description">Rigid upright tube, no crushed crumbs on laptops, two flavours shared with a desk buddy.</p>
+              </div>
+            </div>
+
+            <div class="storyboard-footnote">
+              * Team Reddit sentiment analysis (n = 1,420 snack purchase discussions), directional analysis.
+            </div>
+          </div>
+
+          <!-- ==================================================================
+               DEEP DIVE: QUICK COMMERCE SIMULATION (OFFICE VS CAMPUS)
+               ================================================================== -->
+          <div class="qc-interactive-spotlight stagger-item" id="qcLiveExperience">
+            <div class="qc-spotlight-top">
+              <div>
+                <h3 class="qc-spotlight-title">⚡ Quick Commerce Live Simulation: <span>Office vs Campus</span></h3>
+                <p style="font-size:0.92rem; color:var(--deep-brown); opacity:0.85; margin-top:4px;">
+                  Experience exact real-world app screens, 10-minute dark store dispatch, and split-payment mechanics.
+                </p>
+              </div>
+
+              <div class="qc-view-tabs" role="tablist">
+                <button class="qc-view-tab active" onclick="switchQcView('sideBySide', this)">Side-by-Side</button>
+                <button class="qc-view-tab" onclick="switchQcView('officeOnly', this)">🏢 Office Deep-Dive</button>
+                <button class="qc-view-tab" onclick="switchQcView('campusOnly', this)">🎓 Campus Deep-Dive</button>
+              </div>
+            </div>
+
+            <div class="qc-simulator-grid" id="qcSimGrid">
+              <!-- OFFICE PERSONA SCREEN -->
+              <div class="qc-persona-card highlight" id="qcOfficeCard">
+                <div class="persona-badge-row">
+                  <span class="persona-tag tag-office">🏢 Corporate / Tech Park Order</span>
+                  <span style="font-size:0.84rem; font-weight:800; color:var(--emerald);">4:15 PM Slump</span>
+                </div>
+
+                <h4 class="persona-header-title">The Desk-Buddy Split Order</h4>
+                <p class="persona-context">
+                  <strong>Location:</strong> Cyber City Tech Park, Tower B, 4th Floor · Co-working Desk 42
+                </p>
+
+                <div class="phone-qc-screen">
+                  <div class="qc-top-delivery-bar">
+                    <span>Delivering to: <strong>Office Reception Desk</strong></span>
+                    <span class="eta-badge tabular-nums">⚡ 9 MINS</span>
+                  </div>
+
+                  <div class="qc-product-row">
+                    <div class="qc-product-img">
+                      <svg width="34" height="24" viewBox="0 0 34 24" fill="none">
+                        <rect x="2" y="4" width="14" height="16" rx="2" fill="#E3A92B"/>
+                        <rect x="16" y="4" width="14" height="16" rx="2" fill="#C8321F"/>
+                        <rect x="14" y="2" width="4" height="20" rx="1" fill="#0F5C4D"/>
+                      </svg>
+                    </div>
+                    <div class="qc-product-info">
+                      <div class="qc-product-name">CrunchUp Duo Canister (90g)</div>
+                      <div class="qc-product-meta">Masala (Left) + Delulu Chilli (Right)</div>
+                    </div>
+                    <div class="qc-product-price tabular-nums">₹40</div>
+                  </div>
+
+                  <div class="qc-order-summary-box">
+                    <div class="qc-bill-row">
+                      <span>Item Total (Locked Price)</span>
+                      <span class="tabular-nums">₹40.00</span>
+                    </div>
+                    <div class="qc-bill-row">
+                      <span>Delivery Fee (Dark Store 0.8 km)</span>
+                      <span style="color:var(--emerald); font-weight:800;">FREE</span>
+                    </div>
+                    <div class="qc-bill-row qc-bill-total">
+                      <span>Total Amount Paid</span>
+                      <span class="tabular-nums">₹40.00</span>
+                    </div>
+                  </div>
+
+                  <div class="split-pay-action-box">
+                    <div>
+                      <div class="split-pay-text">Desk Buddy Split (₹20 / ₹20)</div>
+                      <div style="font-size:0.75rem; color:var(--deep-brown); opacity:0.8;">Instant UPI split link to colleague</div>
+                    </div>
+                    <button class="split-pay-btn" onclick="openSplitNotice('office')">Split ₹20</button>
+                  </div>
+                </div>
+
+                <div class="live-tracking-box">
+                  <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-weight:800;">
+                    <span>Live Order Tracking</span>
+                    <span style="color:var(--orange);">Dark Store ➔ Cyber Tower B</span>
+                  </div>
+                  <div class="tracking-steps">
+                    <div class="tracking-step done">
+                      <div class="tracking-dot">✓</div>
+                      <span>Packed</span>
+                    </div>
+                    <div class="tracking-step done">
+                      <div class="tracking-dot">✓</div>
+                      <span>Rider EV</span>
+                    </div>
+                    <div class="tracking-step done">
+                      <div class="tracking-dot">3m</div>
+                      <span>Turnstile</span>
+                    </div>
+                    <div class="tracking-step">
+                      <div class="tracking-dot">4</div>
+                      <span>Delivered</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="qc-bullets-list">
+                  <div class="qc-bullet-item">
+                    <span class="qc-bullet-icon">✓</span>
+                    <span><strong>Silent opening:</strong> Rigid tube pops open without the loud crinkle of foil bags during quiet floor hours.</span>
+                  </div>
+                  <div class="qc-bullet-item">
+                    <span class="qc-bullet-icon">✓</span>
+                    <span><strong>Zero keyboard mess:</strong> Crisp chips held in upright canister, preventing greasy finger residue on trackpads.</span>
+                  </div>
+                  <div class="qc-bullet-item">
+                    <span class="qc-bullet-icon">✓</span>
+                    <span><strong>Colleague bonding:</strong> "Ek side tumhari, ek meri" makes 4 PM tea breaks an effortless social touchpoint.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CAMPUS PERSONA SCREEN -->
+              <div class="qc-persona-card" id="qcCampusCard">
+                <div class="persona-badge-row">
+                  <span class="persona-tag tag-campus">🎓 Campus / Hostel Dorm Order</span>
+                  <span style="font-size:0.84rem; font-weight:800; color:var(--chilli-red);">11:45 PM Midnight Binge</span>
+                </div>
+
+                <h4 class="persona-header-title">The Late-Night Hostel Drop</h4>
+                <p class="persona-context">
+                  <strong>Location:</strong> Tagore Hostel, Block C, Room 304 · University North Campus
+                </p>
+
+                <div class="phone-qc-screen">
+                  <div class="qc-top-delivery-bar">
+                    <span>Delivering to: <strong>Hostel Main Security Gate</strong></span>
+                    <span class="eta-badge tabular-nums">⚡ 11 MINS</span>
+                  </div>
+
+                  <div class="qc-product-row">
+                    <div class="qc-product-img">
+                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                        <path d="M5 4 L23 4 L26 24 L2 24 Z" fill="#E8681F"/>
+                        <circle cx="14" cy="14" r="5" fill="#FFF3E6"/>
+                      </svg>
+                    </div>
+                    <div class="qc-product-info">
+                      <div class="qc-product-name">CrunchUp Peri-Peri Pouch Trio / Duo</div>
+                      <div class="qc-product-meta">Maximum Spice Punch · Midnight Fuel</div>
+                    </div>
+                    <div class="qc-product-price tabular-nums">₹40</div>
+                  </div>
+
+                  <div class="qc-order-summary-box">
+                    <div class="qc-bill-row">
+                      <span>Item Total (Student Locked)</span>
+                      <span class="tabular-nums">₹40.00</span>
+                    </div>
+                    <div class="qc-bill-row">
+                      <span>Night Munchies Surge</span>
+                      <span style="color:var(--emerald); font-weight:800;">₹0 (WAIVED)</span>
+                    </div>
+                    <div class="qc-bill-row qc-bill-total">
+                      <span>Total Amount Paid</span>
+                      <span class="tabular-nums">₹40.00</span>
+                    </div>
+                  </div>
+
+                  <div class="split-pay-action-box" style="background:#FFF5F0; border-color:#FED7C4;">
+                    <div>
+                      <div class="split-pay-text" style="color:var(--chilli-red);">Roommate Split (₹20 / ₹20)</div>
+                      <div style="font-size:0.75rem; color:var(--deep-brown); opacity:0.8;">Sent to Room 304 WhatsApp group</div>
+                    </div>
+                    <button class="split-pay-btn" style="background:var(--chilli-red);" onclick="openSplitNotice('campus')">Split ₹20</button>
+                  </div>
+                </div>
+
+                <div class="live-tracking-box">
+                  <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-weight:800;">
+                    <span>Live Order Tracking</span>
+                    <span style="color:var(--orange);">North Campus Hub ➔ Gate 2</span>
+                  </div>
+                  <div class="tracking-steps">
+                    <div class="tracking-step done">
+                      <div class="tracking-dot">✓</div>
+                      <span>DarkStore</span>
+                    </div>
+                    <div class="tracking-step done">
+                      <div class="tracking-dot">✓</div>
+                      <span>Crossing</span>
+                    </div>
+                    <div class="tracking-step done">
+                      <div class="tracking-dot">2m</div>
+                      <span>Hostel Gate</span>
+                    </div>
+                    <div class="tracking-step">
+                      <div class="tracking-dot">4</div>
+                      <span>Collected</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="qc-bullets-list">
+                  <div class="qc-bullet-item">
+                    <span class="qc-bullet-icon">✓</span>
+                    <span><strong>Pocket-friendly ₹40 lock:</strong> Never exceeds hostel student pocket money budgets.</span>
+                  </div>
+                  <div class="qc-bullet-item">
+                    <span class="qc-bullet-icon">✓</span>
+                    <span><strong>Snap-apart sharing:</strong> Roommates cleanly split the two halves without arguing who gets more.</span>
+                  </div>
+                  <div class="qc-bullet-item">
+                    <span class="qc-bullet-icon">✓</span>
+                    <span><strong>High viral banter:</strong> Delulu Chilli & Main Character Masala names trigger organic hostel reels & stories.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 3: THE DUO CANISTER (CINEMATIC HERO)
+           ====================================================================== -->
+      <section class="scene" id="scene3" aria-label="Scene 3: The Duo Canister">
+        <div class="canister-stage-wrapper">
+          <div class="stage-controls-bar">
+            <div class="stage-title-wrap">
+              <div class="section-kicker">Hero Mechanical Innovation</div>
+              <h2 class="stage-title">The Duo Canister Experience</h2>
+              <p class="stage-sub">Two flavours. One ₹40 purchase. Split cleanly down the middle.</p>
+            </div>
+
+            <button class="replay-stage-btn" onclick="runCanisterSequence()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Replay ↻</span>
+            </button>
+          </div>
+
+          <div class="cinematic-canister-stage" id="cinematicStage">
+            <div id="cinematicFlash"></div>
+            <div class="floor-shadow" id="floorShadow"></div>
+
+            <!-- Left Faceless Friend -->
+            <div class="faceless-person person-left" id="personLeft">
+              <svg viewBox="0 0 140 200" width="100%" height="100%" fill="none">
+                <circle cx="70" cy="40" r="22" fill="#F2C9A0"/>
+                <path d="M35 75 C35 60, 105 60, 105 75 L115 150 L25 150 Z" fill="#0F5C4D"/>
+                <path d="M85 90 Q115 95 125 105" stroke="#F2C9A0" stroke-width="12" stroke-linecap="round"/>
+                <text x="70" y="180" font-family="'Poppins', sans-serif" font-size="11" font-weight="800" fill="#4A2C17" text-anchor="middle">Friend A (Masala)</text>
+              </svg>
+            </div>
+
+            <!-- Right Faceless Friend -->
+            <div class="faceless-person person-right" id="personRight">
+              <svg viewBox="0 0 140 200" width="100%" height="100%" fill="none">
+                <circle cx="70" cy="40" r="22" fill="#F2C9A0"/>
+                <path d="M35 75 C35 60, 105 60, 105 75 L115 150 L25 150 Z" fill="#E8681F"/>
+                <path d="M55 90 Q25 95 15 105" stroke="#F2C9A0" stroke-width="12" stroke-linecap="round"/>
+                <text x="70" y="180" font-family="'Poppins', sans-serif" font-size="11" font-weight="800" fill="#4A2C17" text-anchor="middle">Friend B (Delulu)</text>
+              </svg>
+            </div>
+
+            <!-- Dotted Arc Sharing Arrow -->
+            <div class="sharing-arc-wrap" id="sharingArcWrap">
+              <svg width="240" height="50" viewBox="0 0 240 50" fill="none">
+                <path d="M 20 40 Q 120 5 220 40" stroke="#E8681F" stroke-width="2.5" stroke-dasharray="5 5" fill="none"/>
+                <polygon points="218,33 226,42 214,45" fill="#E8681F"/>
+                <polygon points="22,33 14,42 26,45" fill="#E8681F"/>
+              </svg>
+              <div class="sharing-micro-copy">Ek side tumhari, ek meri</div>
+            </div>
+
+            <!-- Canister Rig -->
+            <div class="canister-rig" id="canisterRig">
+              <div class="lid-left" id="lidLeft"></div>
+
+              <!-- Left Half: Turmeric Gold "Main Character Masala" -->
+              <div class="canister-half half-left" id="canisterHalfLeft">
+                <svg width="210" height="120" viewBox="0 0 210 120" fill="none">
+                  <rect x="0" y="10" width="200" height="100" rx="6" fill="#E3A92B"/>
+                  <rect x="0" y="10" width="200" height="8" fill="#FFF8E7" opacity="0.4"/>
+                  <rect x="0" y="102" width="200" height="8" fill="#4A2C17" opacity="0.2"/>
+                  <rect x="2" y="12" width="6" height="96" rx="3" fill="#FFFFFF" opacity="0.7"/>
+                  
+                  <g class="chips-exposed" opacity="0.95">
+                    <ellipse cx="196" cy="40" rx="12" ry="7" fill="#FCE8B3" stroke="#DCA224" stroke-width="1.5"/>
+                    <ellipse cx="194" cy="60" rx="14" ry="8" fill="#FFE299" stroke="#DCA224" stroke-width="1.5"/>
+                    <ellipse cx="196" cy="80" rx="12" ry="7" fill="#FCE8B3" stroke="#DCA224" stroke-width="1.5"/>
+                  </g>
+
+                  <text x="100" y="55" font-family="'Poppins', sans-serif" font-size="11" font-weight="900" fill="#4A2C17" text-anchor="middle" letter-spacing="1">MAIN CHARACTER</text>
+                  <text x="100" y="74" font-family="'Poppins', sans-serif" font-size="14" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1.5">MASALA</text>
+                  <rect x="70" y="84" width="60" height="14" rx="7" fill="#4A2C17"/>
+                  <text x="100" y="94" font-family="'Poppins', sans-serif" font-size="8" font-weight="800" fill="#FFF3E6" text-anchor="middle">₹20 VALUE</text>
+                </svg>
+              </div>
+
+              <!-- Right Half: Chilli Red "Delulu Chilli" -->
+              <div class="canister-half half-right" id="canisterHalfRight">
+                <svg width="210" height="120" viewBox="0 0 210 120" fill="none">
+                  <rect x="10" y="10" width="200" height="100" rx="6" fill="#C8321F"/>
+                  <rect x="10" y="10" width="200" height="8" fill="#FFF8E7" opacity="0.3"/>
+                  <rect x="10" y="102" width="200" height="8" fill="#4A2C17" opacity="0.3"/>
+                  <rect x="202" y="12" width="6" height="96" rx="3" fill="#FFFFFF" opacity="0.7"/>
+
+                  <g class="chips-exposed" opacity="0.95">
+                    <ellipse cx="14" cy="40" rx="12" ry="7" fill="#F9A49A" stroke="#B02514" stroke-width="1.5"/>
+                    <ellipse cx="16" cy="60" rx="14" ry="8" fill="#FF8D7E" stroke="#B02514" stroke-width="1.5"/>
+                    <ellipse cx="14" cy="80" rx="12" ry="7" fill="#F9A49A" stroke="#B02514" stroke-width="1.5"/>
+                  </g>
+
+                  <text x="110" y="55" font-family="'Poppins', sans-serif" font-size="11" font-weight="900" fill="#FFF3E6" text-anchor="middle" letter-spacing="1">DELULU</text>
+                  <text x="110" y="74" font-family="'Poppins', sans-serif" font-size="14" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1.5">CHILLI</text>
+                  <rect x="80" y="84" width="60" height="14" rx="7" fill="#FFFFFF"/>
+                  <text x="110" y="94" font-family="'Poppins', sans-serif" font-size="8" font-weight="800" fill="#C8321F" text-anchor="middle">₹20 VALUE</text>
+                </svg>
+              </div>
+
+              <!-- Center Band -->
+              <div id="centerBand" style="position:absolute; width:24px; height:110px; background:#0F5C4D; border:2px solid #C9A24B; border-radius:4px; z-index:12; display:flex; align-items:center; justify-content:center; transition:opacity 300ms;">
+                <span style="writing-mode: vertical-rl; transform: rotate(180deg); font-size:8px; font-weight:900; color:#FFF3E6; letter-spacing:1px;">CRUNCHUP DUO</span>
+              </div>
+
+              <div class="lid-right" id="lidRight"></div>
+            </div>
+          </div>
+
+          <!-- Swap Flavours Button -->
+          <button class="swap-flavours-btn" id="swapFlavoursBtn" onclick="toggleSwapFlavours()">
+            <span id="swapIcon">⇄</span>
+            <span id="swapLabel">Swap flavours</span>
+          </button>
+
+          <!-- Positive Impact Cards Strip -->
+          <div class="impact-cards-strip stagger-item">
+            <div class="impact-card">
+              <div class="impact-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              </div>
+              <div class="impact-card-text">Two flavours, one purchase</div>
+            </div>
+
+            <div class="impact-card">
+              <div class="impact-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="impact-card-text">Zero first-purchase risk</div>
+            </div>
+
+            <div class="impact-card">
+              <div class="impact-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              </div>
+              <div class="impact-card-text">Try both, pick your favourite</div>
+            </div>
+
+            <div class="impact-card">
+              <div class="impact-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="impact-card-text">Share with your desk buddy</div>
+            </div>
+
+            <div class="impact-card">
+              <div class="impact-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div class="impact-card-text">Pick your side: poll + UGC</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 4: VIBE FLAVOURS + K-SERIES
+           ====================================================================== -->
+      <section class="scene" id="scene4" aria-label="Scene 4: Vibe Flavours and K-Series">
+        <div class="flavours-section-wrap">
+          <div class="section-heading-block">
+            <div class="section-kicker">Flavour Portfolio</div>
+            <h2 class="section-main-title">Gen Z Vibe Flavours & Formal K-Series</h2>
+            <p class="section-subtext">
+              Formulated for high crunch memory, social shareability, and distinct snack moments.
+            </p>
+          </div>
+
+          <div class="pouches-3d-grid stagger-item">
+            <!-- Pouch 1: Turmeric Gold -->
+            <div class="pouch-card" onclick="inspectFlavourModal('masala')">
+              <div class="pouch-art-box">
+                <svg width="110" height="150" viewBox="0 0 110 150" fill="none">
+                  <path d="M20 15 L90 15 L98 135 L12 135 Z" fill="#E3A92B" rx="8"/>
+                  <path d="M18 12 L92 12 L92 18 L18 18 Z" fill="#4A2C17" opacity="0.3"/>
+                  <circle cx="55" cy="70" r="28" fill="#FFF3E6"/>
+                  <text x="55" y="68" font-family="'Poppins', sans-serif" font-size="18" font-weight="900" fill="#4A2C17" text-anchor="middle">M</text>
+                  <text x="55" y="82" font-family="'Poppins', sans-serif" font-size="7" font-weight="800" fill="#E8681F" text-anchor="middle">MASALA</text>
+                </svg>
+              </div>
+              <h3 class="pouch-title">Main Character Masala</h3>
+              <p class="pouch-taste-notes">Roasted cumin, sun-dried mango amchur & bold desi tadka.</p>
+              <div class="pouch-meta-tags">
+                <span>Gen Z</span>
+                <span aria-hidden="true">·</span>
+                <span>Young Office Crowd</span>
+              </div>
+            </div>
+
+            <!-- Pouch 2: Burnt Orange -->
+            <div class="pouch-card" onclick="inspectFlavourModal('peri')">
+              <div class="pouch-art-box">
+                <svg width="110" height="150" viewBox="0 0 110 150" fill="none">
+                  <path d="M20 15 L90 15 L98 135 L12 135 Z" fill="#E8681F" rx="8"/>
+                  <path d="M18 12 L92 12 L92 18 L18 18 Z" fill="#4A2C17" opacity="0.3"/>
+                  <circle cx="55" cy="70" r="28" fill="#FFF3E6"/>
+                  <text x="55" y="68" font-family="'Poppins', sans-serif" font-size="18" font-weight="900" fill="#E8681F" text-anchor="middle">P</text>
+                  <text x="55" y="82" font-family="'Poppins', sans-serif" font-size="7" font-weight="800" fill="#4A2C17" text-anchor="middle">PERI-PERI</text>
+                </svg>
+              </div>
+              <h3 class="pouch-title">Procrastination Peri-Peri</h3>
+              <p class="pouch-taste-notes">African bird's eye chilli, tangy lemon peel & smoked paprika heat.</p>
+              <div class="pouch-meta-tags">
+                <span>Gen Z</span>
+                <span aria-hidden="true">·</span>
+                <span>Young Office Crowd</span>
+              </div>
+            </div>
+
+            <!-- Pouch 3: Chilli Red (HERO) -->
+            <div class="pouch-card pouch-hero-delulu" onclick="inspectFlavourModal('delulu')">
+              <div class="pouch-art-box">
+                <svg width="110" height="150" viewBox="0 0 110 150" fill="none">
+                  <path d="M20 15 L90 15 L98 135 L12 135 Z" fill="#C8321F" rx="8"/>
+                  <path d="M18 12 L92 12 L92 18 L18 18 Z" fill="#FFF3E6" opacity="0.3"/>
+                  <circle cx="55" cy="70" r="28" fill="#FFF3E6"/>
+                  <text x="55" y="68" font-family="'Poppins', sans-serif" font-size="18" font-weight="900" fill="#C8321F" text-anchor="middle">D</text>
+                  <text x="55" y="82" font-family="'Poppins', sans-serif" font-size="7" font-weight="800" fill="#4A2C17" text-anchor="middle">DELULU</text>
+                </svg>
+              </div>
+              <h3 class="pouch-title">Delulu Chilli (Hero)</h3>
+              <p class="pouch-taste-notes">Kashmiri red heat, sweet tomato finish & unforgettable bold bite.</p>
+              <div class="pouch-meta-tags">
+                <span>Gen Z</span>
+                <span aria-hidden="true">·</span>
+                <span>Young Office Crowd</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formal K-Series Box Tile -->
+          <div class="k-series-formal-card stagger-item">
+            <div class="k-series-badge">Formal Architectural Line</div>
+            <h3 class="k-series-title">Seoul Sizzle Fire Glaze · K-Town Inferno Glaze</h3>
+            <p class="k-series-caption">
+              K-Series: formal, premium, Korean-inspired · Fermented gochujang glaze, double-fired crisp crunch, tailored for discerning late-night desk workers.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 5: NANO UGC ENGINE (ANIMATED)
+           ====================================================================== -->
+      <section class="scene" id="scene5" aria-label="Scene 5: Nano UGC Engine">
+        <div class="ugc-engine-grid">
+          <div class="ugc-phone-wrapper stagger-item">
+            <div class="ugc-phone-frame">
+              <div class="phone-notch"></div>
+              
+              <div class="reel-media-area">
+                <div class="reel-progress-track">
+                  <div class="reel-progress-bar"></div>
+                </div>
+
+                <div class="floating-hearts-layer">
+                  <div class="heart-float">♥</div>
+                  <div class="heart-float">♥</div>
+                  <div class="heart-float">♥</div>
+                </div>
+
+                <div id="creatorArtArea">
+                  <svg width="180" height="240" viewBox="0 0 180 240" fill="none">
+                    <circle cx="90" cy="65" r="26" fill="#F2C9A0"/>
+                    <path d="M50 115 C50 95, 130 95, 130 115 L145 220 L35 220 Z" fill="#E8681F"/>
+                    <rect x="110" y="110" width="16" height="42" rx="3" fill="#E3A92B"/>
+                    <rect x="126" y="110" width="16" height="42" rx="3" fill="#C8321F"/>
+                    <rect x="124" y="108" width="4" height="46" rx="1" fill="#0F5C4D"/>
+                  </svg>
+                </div>
+
+                <div class="comment-bubble" id="reelCommentBubble">
+                  "Split this with my desk buddy today! ₹40 well spent 🔥"
+                </div>
+              </div>
+            </div>
+
+            <div class="creator-persona-indicator" id="personaCycleLabel">
+              Active Persona: 🎓 Campus Creator (Hostel Dorm)
+            </div>
+          </div>
+
+          <div class="venn-conversion-area stagger-item">
+            <div class="section-heading-block" style="text-align:left; margin-bottom:20px;">
+              <div class="section-kicker">Performance Flywheel</div>
+              <h2 class="section-main-title" style="font-size:2.2rem;">Nano UGC Engine</h2>
+              <p class="section-subtext" style="margin:0;">
+                High-trust creators delivering 6–12% organic engagement right into 10-minute Quick Commerce carts.
+              </p>
+            </div>
+
+            <div class="venn-diagram-svg-wrap">
+              <svg viewBox="0 0 440 280" width="100%" height="100%">
+                <circle cx="170" cy="120" r="85" fill="rgba(15, 92, 77, 0.25)" stroke="#0F5C4D" stroke-width="2" class="venn-circle"/>
+                <text x="120" y="80" font-size="10" font-weight="700" fill="#0F5C4D">A. Nano creators</text>
+                <text x="120" y="93" font-size="8" fill="#4A2C17">Campus & Office</text>
+
+                <circle cx="270" cy="120" r="85" fill="rgba(200, 50, 31, 0.22)" stroke="#C8321F" stroke-width="2" class="venn-circle"/>
+                <text x="320" y="80" font-size="10" font-weight="700" fill="#C8321F">B. Right Audience</text>
+                <text x="320" y="93" font-size="8" fill="#4A2C17">Gen Z & Office</text>
+
+                <circle cx="220" cy="190" r="85" fill="rgba(227, 169, 43, 0.25)" stroke="#E3A92B" stroke-width="2" class="venn-circle"/>
+                <text x="220" y="245" font-size="10" font-weight="700" fill="#B37E12" text-anchor="middle">C. High-Trust UGC</text>
+                <text x="220" y="258" font-size="8" fill="#4A2C17" text-anchor="middle">6-12% engagement</text>
+
+                <circle cx="220" cy="145" r="28" fill="#E8681F" opacity="0.85">
+                  <animate attributeName="r" values="26;30;26" dur="2s" repeatCount="indefinite"/>
+                </circle>
+                <text x="220" y="142" font-size="8" font-weight="900" fill="#FFFFFF" text-anchor="middle">RIGHT REACH,</text>
+                <text x="220" y="152" font-size="7" font-weight="800" fill="#FFFFFF" text-anchor="middle">NOT BIG REACH</text>
+              </svg>
+            </div>
+
+            <div class="ugc-conversion-stream-card">
+              <div class="stream-header">
+                <div class="stream-title">Live UGC ➔ Cart Conversion Stream</div>
+                <div class="orders-counter-chip tabular-nums">
+                  <span id="ugcOrdersCount">1,420</span> orders from UGC
+                </div>
+              </div>
+
+              <div class="dots-stream-track" id="dotsStreamTrack">
+                <svg width="100%" height="100%" viewBox="0 0 500 48" id="dotsSvg">
+                  <path d="M 10 24 Q 250 10 450 24" stroke="rgba(232, 104, 31, 0.3)" stroke-dasharray="4 4" fill="none"/>
+                  
+                  <!-- Continuous drifting particles -->
+                  <circle cx="30" cy="24" r="5" fill="#A89F91">
+                    <animate attributeName="cx" from="20" to="440" dur="4s" repeatCount="indefinite"/>
+                    <animate attributeName="fill" values="#A89F91;#A89F91;#E8681F;#E8681F" keyTimes="0;0.4;0.6;1" dur="4s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle cx="120" cy="22" r="5" fill="#A89F91">
+                    <animate attributeName="cx" from="20" to="440" dur="4s" begin="1s" repeatCount="indefinite"/>
+                    <animate attributeName="fill" values="#A89F91;#A89F91;#E8681F;#E8681F" keyTimes="0;0.4;0.6;1" dur="4s" begin="1s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle cx="220" cy="20" r="5" fill="#E8681F">
+                    <animate attributeName="cx" from="20" to="440" dur="4s" begin="2s" repeatCount="indefinite"/>
+                    <animate attributeName="fill" values="#A89F91;#A89F91;#E8681F;#E8681F" keyTimes="0;0.4;0.6;1" dur="4s" begin="2s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle cx="320" cy="22" r="5" fill="#E8681F">
+                    <animate attributeName="cx" from="20" to="440" dur="4s" begin="3s" repeatCount="indefinite"/>
+                    <animate attributeName="fill" values="#A89F91;#A89F91;#E8681F;#E8681F" keyTimes="0;0.4;0.6;1" dur="4s" begin="3s" repeatCount="indefinite"/>
+                  </circle>
+
+                  <!-- Cart icon at right end -->
+                  <g transform="translate(460, 14)">
+                    <rect x="0" y="4" width="22" height="16" rx="3" fill="#E8681F"/>
+                    <circle cx="5" cy="22" r="3" fill="#4A2C17"/>
+                    <circle cx="17" cy="22" r="3" fill="#4A2C17"/>
+                    <path d="M-4 0 L0 4" stroke="#4A2C17" stroke-width="2"/>
+                  </g>
+                </svg>
+              </div>
+
+              <div class="ugc-budget-math-chip tabular-nums">
+                30 creators × ₹3,000 = <strong>₹90,000</strong> (30% of total marketing budget)
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 6: WHERE THE ₹3,00,000 GOES (SANKEY)
+           ====================================================================== -->
+      <section class="scene" id="scene6" aria-label="Scene 6: Budget Allocation Sankey">
+        <div class="sankey-section-wrap">
+          <div class="section-heading-block">
+            <div class="section-kicker">Financial Discipline</div>
+            <h2 class="section-main-title">Where the ₹3,00,000 Goes</h2>
+            <p class="section-subtext">
+              Zero waste. Highly targeted spend across creator-led velocity, digital intent, sampling, and launch assets.
+            </p>
+          </div>
+
+          <div class="sankey-container-card stagger-item">
+            <div id="sankeyTooltip">Tooltip</div>
+
+            <div class="sankey-top-stats">
+              <div class="budget-total-box tabular-nums">
+                Total Budget: <span id="budgetCountUp">₹3,00,000</span>
+              </div>
+              <div style="font-size:0.9rem; color:var(--deep-brown); opacity:0.85;">
+                Hover any ribbon to inspect exact capital allocation & percentage share.
+              </div>
+            </div>
+
+            <div class="sankey-svg-wrapper">
+              <svg viewBox="0 0 960 420" width="960" height="420" id="sankeySvg">
+                <defs>
+                  <linearGradient id="gradDigital" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#2A9D8F" stop-opacity="0.85"/>
+                  </linearGradient>
+                  <linearGradient id="gradUgc" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#E76F51" stop-opacity="0.85"/>
+                  </linearGradient>
+                  <linearGradient id="gradSample" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#E9C46A" stop-opacity="0.85"/>
+                  </linearGradient>
+                  <linearGradient id="gradRetail" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#9C89B8" stop-opacity="0.85"/>
+                  </linearGradient>
+                  <linearGradient id="gradDesign" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#B0C4B1" stop-opacity="0.85"/>
+                  </linearGradient>
+                  <linearGradient id="gradDoomsday" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#F4A261" stop-opacity="0.85"/>
+                  </linearGradient>
+                  <linearGradient id="gradReserve" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#A8DADC" stop-opacity="0.85"/>
+                  </linearGradient>
+                  <linearGradient id="gradMonth1Extra" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#2A9D8F" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#0F5C4D" stop-opacity="0.85"/>
+                  </linearGradient>
+                </defs>
+
+                <!-- SOURCE NODE -->
+                <rect x="40" y="30" width="30" height="340" rx="4" fill="#E8681F"/>
+                <text x="30" y="200" font-size="13" font-weight="800" fill="#4A2C17" text-anchor="middle" transform="rotate(-90 30 200)">BUDGET ₹3,00,000</text>
+
+                <!-- 1. Digital Ads ₹75,000 (25%) -->
+                <path d="M 70 30 C 260 30, 360 40, 520 40 L 520 115 C 360 115, 260 105, 70 105 Z" fill="url(#gradDigital)" class="sankey-band" onmousemove="showSankeyTip(event, 'Digital Ads: ₹75,000 (25%)')" onmouseleave="hideSankeyTip()"/>
+                
+                <path d="M 550 40 C 650 40, 720 30, 800 30 L 800 75 C 720 75, 650 85, 550 85 Z" fill="#2A9D8F" opacity="0.8" class="sankey-band" onmousemove="showSankeyTip(event, 'Google Search Ads: ₹45,000 (60% of Digital)')" onmouseleave="hideSankeyTip()"/>
+                <path d="M 550 85 C 650 85, 720 100, 800 100 L 800 130 C 720 130, 650 115, 550 115 Z" fill="#45B69C" opacity="0.8" class="sankey-band" onmousemove="showSankeyTip(event, 'ChatGPT / AI Ads: ₹30,000 (40% of Digital)')" onmouseleave="hideSankeyTip()"/>
+
+                <rect x="520" y="40" width="30" height="75" rx="3" fill="#2A9D8F"/>
+                <text x="535" y="132" font-size="10" font-weight="700" fill="#2A9D8F" text-anchor="middle">Digital ₹75k (25%)</text>
+                <text x="810" y="55" font-size="10" font-weight="700" fill="#4A2C17">Google ₹45k</text>
+                <text x="810" y="118" font-size="10" font-weight="700" fill="#4A2C17">ChatGPT ₹30k</text>
+
+                <!-- 2. Nano UGC Creators ₹90,000 (30%) -->
+                <path d="M 70 105 C 320 105, 480 150, 800 150 L 800 240 C 480 240, 320 195, 70 195 Z" fill="url(#gradUgc)" class="sankey-band" onmousemove="showSankeyTip(event, 'Nano UGC Creators: ₹90,000 (30%) · 30 creators × ₹3k')" onmouseleave="hideSankeyTip()"/>
+                <rect x="800" y="150" width="20" height="90" rx="3" fill="#E76F51"/>
+                <text x="830" y="200" font-size="11" font-weight="800" fill="#4A2C17">Nano UGC ₹90k (30%)</text>
+
+                <!-- 3. Sampling ₹45,000 (15%) -->
+                <path d="M 70 195 C 340 195, 500 255, 800 255 L 800 300 C 500 300, 340 240, 70 240 Z" fill="url(#gradSample)" class="sankey-band" onmousemove="showSankeyTip(event, 'Sampling Drives: ₹45,000 (15%)')" onmouseleave="hideSankeyTip()"/>
+                <rect x="800" y="255" width="20" height="45" rx="3" fill="#E9C46A"/>
+                <text x="830" y="280" font-size="11" font-weight="800" fill="#4A2C17">Sampling ₹45k (15%)</text>
+
+                <!-- 4. Retailer + QC Offers ₹45,000 (15%) -->
+                <path d="M 70 240 C 350 240, 520 315, 800 315 L 800 360 C 520 360, 350 285, 70 285 Z" fill="url(#gradRetail)" class="sankey-band" onmousemove="showSankeyTip(event, 'Retailer & QC Offers: ₹45,000 (15%)')" onmouseleave="hideSankeyTip()"/>
+                <rect x="800" y="315" width="20" height="45" rx="3" fill="#9C89B8"/>
+                <text x="830" y="340" font-size="11" font-weight="800" fill="#4A2C17">Retailer + QC ₹45k (15%)</text>
+
+                <!-- 5. Rebrand + K-Box + Design ₹30,000 (10%) -->
+                <path d="M 70 285 C 360 285, 540 372, 800 372 L 800 402 C 540 402, 360 315, 70 315 Z" fill="url(#gradDesign)" class="sankey-band" onmousemove="showSankeyTip(event, 'Rebrand + K-box + Design: ₹30,000 (10%)')" onmouseleave="hideSankeyTip()"/>
+                <rect x="800" y="372" width="20" height="30" rx="3" fill="#B0C4B1"/>
+                <text x="830" y="390" font-size="10" font-weight="700" fill="#4A2C17">Rebrand & Design ₹30k (10%)</text>
+
+                <!-- 6. Doomsday x Duo Launch Assets -->
+                <rect x="360" y="260" width="22" height="30" rx="3" fill="#0F5C4D"/>
+                <text x="371" y="305" font-size="9" font-weight="700" fill="#0F5C4D" text-anchor="middle">Month 1 Extra +₹30k</text>
+
+                <path d="M 70 315 C 240 315, 340 325, 520 325 L 520 335 C 340 335, 240 325, 70 325 Z" fill="url(#gradDoomsday)" class="sankey-band" onmousemove="showSankeyTip(event, 'Doomsday Base Allocation: ₹10,000 from budget')" onmouseleave="hideSankeyTip()"/>
+                <path d="M 382 270 C 440 270, 480 325, 520 325 L 520 355 C 480 355, 440 290, 382 290 Z" fill="url(#gradMonth1Extra)" class="sankey-band" onmousemove="showSankeyTip(event, 'Month 1 Extra Contribution: +₹30,000 added to launch assets')" onmouseleave="hideSankeyTip()"/>
+                
+                <rect x="520" y="325" width="20" height="40" rx="3" fill="#0F5C4D"/>
+                <text x="550" y="350" font-size="10" font-weight="800" fill="#0F5C4D">Doomsday × Duo Assets ₹40k</text>
+
+                <!-- 7. Contingency Reserve ₹5,000 -->
+                <path d="M 70 365 C 200 365, 300 395, 420 395 L 420 400 C 300 400, 200 370, 70 370 Z" fill="url(#gradReserve)" class="sankey-band" onmousemove="showSankeyTip(event, 'Contingency Reserve: ₹5,000')" onmouseleave="hideSankeyTip()"/>
+                <rect x="420" y="395" width="12" height="10" rx="2" fill="#A8DADC"/>
+                <text x="440" y="403" font-size="9" font-weight="700" fill="#4A2C17">Reserve ₹5k</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 7: LIMITED EDITION COLLAB (AVENGERS: DOOMSDAY)
+           ====================================================================== -->
+      <section class="scene" id="scene7" aria-label="Scene 7: Limited Edition Collab">
+        <div class="collab-section-wrap">
+          <div class="section-heading-block">
+            <span class="licence-pending-tag">LICENCE PENDING · CONCEPT</span>
+            <h2 class="section-main-title">CrunchUp × Avengers: Doomsday</h2>
+            <p class="section-subtext">
+              High-impact cultural playbook modeled on Hocco × Mirzapur. Limited edition emerald & gold geometric sleeve with zero upfront license risk.
+            </p>
+          </div>
+
+          <div class="collab-grid stagger-item">
+            <div class="collab-canister-card">
+              <div class="light-sweep-overlay"></div>
+
+              <svg width="320" height="160" viewBox="0 0 320 160" fill="none">
+                <ellipse cx="160" cy="148" rx="110" ry="8" fill="rgba(74, 44, 23, 0.15)"/>
+                
+                <rect x="30" y="25" width="260" height="100" rx="8" fill="#0F5C4D"/>
+                
+                <path d="M30 25 L80 125 L130 25 L180 125 L230 25 L280 125" stroke="#C9A24B" stroke-width="2.5" opacity="0.6"/>
+                <circle cx="160" cy="75" r="32" fill="#094035" stroke="#C9A24B" stroke-width="3"/>
+                <text x="160" y="72" font-family="'Poppins', sans-serif" font-size="9" font-weight="900" fill="#C9A24B" text-anchor="middle" letter-spacing="1.5">CRUNCHUP</text>
+                <text x="160" y="85" font-family="'Poppins', sans-serif" font-size="11" font-weight="900" fill="#FFF3E6" text-anchor="middle" letter-spacing="2">LIMITED</text>
+
+                <rect x="18" y="22" width="14" height="106" rx="7" fill="#C9A24B"/>
+                <rect x="288" y="22" width="14" height="106" rx="7" fill="#C9A24B"/>
+              </svg>
+
+              <div class="collab-timeline">
+                <div class="timeline-node">Month 1 Gate</div>
+                <span>➔</span>
+                <div class="timeline-node">Launch Assets</div>
+                <span>➔</span>
+                <div class="timeline-node highlight">India Release 17 Dec 2026</div>
+              </div>
+            </div>
+
+            <div class="unit-economics-card">
+              <table class="economics-table">
+                <tbody>
+                  <tr>
+                    <td>Format & SKU</td>
+                    <td>Pringles-style Duo Canister (Dual Spiced Glaze)</td>
+                  </tr>
+                  <tr>
+                    <td>Window</td>
+                    <td>Pre-release Q4 2026 / India release 17 Dec 2026</td>
+                  </tr>
+                  <tr>
+                    <td>Playbook Reference</td>
+                    <td>Hocco × Mirzapur (limited edition, ₹100/5-pack, QC + GT)</td>
+                  </tr>
+                  <tr>
+                    <td>Deal Structure</td>
+                    <td>Royalty ~8%, Zero Upfront Payment</td>
+                  </tr>
+                  <tr>
+                    <td>Revenue per Unit</td>
+                    <td class="tabular-nums">₹104.00</td>
+                  </tr>
+                  <tr>
+                    <td>Variable Cost per Unit</td>
+                    <td class="tabular-nums">₹70.00</td>
+                  </tr>
+                  <tr>
+                    <td>Royalty (8%)</td>
+                    <td class="tabular-nums">₹8.30</td>
+                  </tr>
+                  <tr>
+                    <td>Contribution per Unit</td>
+                    <td class="tabular-nums">≈ ₹25.70</td>
+                  </tr>
+                  <tr>
+                    <td>Pilot Batch (2,000 units)</td>
+                    <td class="tabular-nums">≈ ₹51,400</td>
+                  </tr>
+                  <tr>
+                    <td>Less Launch Assets</td>
+                    <td class="tabular-nums" style="color:var(--chilli-red);">−₹40,000</td>
+                  </tr>
+                  <tr class="row-net-positive">
+                    <td>Net Contribution</td>
+                    <td class="tabular-nums">+₹11,400</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p style="font-size:0.78rem; color:var(--deep-brown); opacity:0.7; margin-top:14px; text-align:center;">
+                * Illustrative assumptions; licence terms undisclosed. Strict adherence to non-character geometric branding.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 8: THE RESULT
+           ====================================================================== -->
+      <section class="scene" id="scene8" aria-label="Scene 8: Results and Lift">
+        <div class="results-section-wrap">
+          <div class="section-heading-block">
+            <div class="section-kicker">Performance Outcomes</div>
+            <h2 class="section-main-title">The Commercial Result</h2>
+            <p class="section-subtext">
+              Demonstrated lift across pack volume, revenue velocity, and sustained contribution margin.
+            </p>
+          </div>
+
+          <div class="results-metrics-grid stagger-item">
+            <div class="result-metric-card">
+              <div class="metric-kicker-label">Packs / Month</div>
+              <div class="metric-before-after">
+                <span class="val-before tabular-nums">20,000</span>
+                <span class="val-arrow">➔</span>
+                <span class="val-after tabular-nums" id="metricPacks">30,000</span>
+              </div>
+              <div class="metric-tag-note">+50% Volume Lift</div>
+            </div>
+
+            <div class="result-metric-card">
+              <div class="metric-kicker-label">Monthly Revenue</div>
+              <div class="metric-before-after">
+                <span class="val-before tabular-nums">₹8.0L</span>
+                <span class="val-arrow">➔</span>
+                <span class="val-after tabular-nums" id="metricRev">₹12.0L</span>
+              </div>
+              <div class="metric-tag-note">+₹4.0L Incremental</div>
+            </div>
+
+            <div class="result-metric-card">
+              <div class="metric-kicker-label">Monthly Contribution</div>
+              <div class="metric-before-after">
+                <span class="val-before tabular-nums">₹3.0L</span>
+                <span class="val-arrow">➔</span>
+                <span class="val-after tabular-nums" id="metricContrib">₹4.5L</span>
+              </div>
+              <div class="metric-tag-note">+50% Margin Expansion</div>
+            </div>
+
+            <div class="result-metric-card">
+              <div class="metric-kicker-label">CPIP & CROM</div>
+              <div class="metric-before-after">
+                <span class="val-after tabular-nums" style="font-size:1.5rem;">₹16.67</span>
+                <span class="val-arrow">/</span>
+                <span class="val-after tabular-nums" style="font-size:1.5rem; color:var(--emerald);">1.40×</span>
+              </div>
+              <div class="metric-tag-note">CPIP ₹16.67 · CROM 0.90× ➔ 1.4×</div>
+            </div>
+          </div>
+
+          <div class="chart-container-card stagger-item">
+            <div class="chart-header">
+              <div class="chart-title">Monthly Contribution Net of Marketing (₹ Lakhs)</div>
+              <div style="font-size:0.88rem; font-weight:800; color:var(--emerald);">Compounding ROI</div>
+            </div>
+
+            <div class="chart-svg-wrap">
+              <svg viewBox="0 0 800 160" width="100%" height="100%" id="chartSvg">
+                <line x1="60" y1="20" x2="760" y2="20" stroke="rgba(74, 44, 23, 0.08)" stroke-dasharray="3 3"/>
+                <line x1="60" y1="70" x2="760" y2="70" stroke="rgba(74, 44, 23, 0.08)" stroke-dasharray="3 3"/>
+                <line x1="60" y1="120" x2="760" y2="120" stroke="rgba(74, 44, 23, 0.08)" stroke-dasharray="3 3"/>
+                
+                <text x="35" y="24" font-size="10" font-weight="600" fill="#4A2C17" opacity="0.6">₹5L</text>
+                <text x="35" y="74" font-size="10" font-weight="600" fill="#4A2C17" opacity="0.6">₹3L</text>
+                <text x="35" y="124" font-size="10" font-weight="600" fill="#4A2C17" opacity="0.6">₹1L</text>
+
+                <path d="M 120 140 L 120 95 L 300 75 L 500 50 L 700 32 L 700 140 Z" fill="rgba(232, 104, 31, 0.12)"/>
+                <path id="chartPath" d="M 120 95 L 300 75 L 500 50 L 700 32" fill="none" stroke="#E8681F" stroke-width="3.5" stroke-linecap="round"/>
+
+                <circle cx="120" cy="95" r="5" fill="#E8681F" stroke="#FFFFFF" stroke-width="2"/>
+                <text x="120" y="82" font-size="11" font-weight="800" fill="#4A2C17" text-anchor="middle">₹2.1L</text>
+                <text x="120" y="152" font-size="10" font-weight="600" fill="#4A2C17" opacity="0.8" text-anchor="middle">Month 1</text>
+
+                <circle cx="300" cy="75" r="5" fill="#E8681F" stroke="#FFFFFF" stroke-width="2"/>
+                <text x="300" y="62" font-size="11" font-weight="800" fill="#4A2C17" text-anchor="middle">₹2.8L</text>
+                <text x="300" y="152" font-size="10" font-weight="600" fill="#4A2C17" opacity="0.8" text-anchor="middle">Month 2</text>
+
+                <circle cx="500" cy="50" r="5" fill="#E8681F" stroke="#FFFFFF" stroke-width="2"/>
+                <text x="500" y="38" font-size="11" font-weight="800" fill="#4A2C17" text-anchor="middle">₹3.8L</text>
+                <text x="500" y="152" font-size="10" font-weight="600" fill="#4A2C17" opacity="0.8" text-anchor="middle">Month 3</text>
+
+                <circle cx="700" cy="32" r="6" fill="#0F5C4D" stroke="#FFFFFF" stroke-width="2"/>
+                <text x="700" y="20" font-size="12" font-weight="900" fill="#0F5C4D" text-anchor="middle">₹4.5L</text>
+                <text x="700" y="152" font-size="10" font-weight="800" fill="#0F5C4D" text-anchor="middle">Month 4 (1.4× CROM)</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="locked-price-tagline-box stagger-item">
+            <span>Price locked at ₹40.</span> Value from format, flavour and community.
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SCENE 9: OUTRO
+           ====================================================================== -->
+      <section class="scene" id="scene9" aria-label="Scene 9: Outro">
+        <div class="outro-card">
+          <div class="dhanyawad-svg-wrap">
+            <svg viewBox="0 0 320 100" width="100%" height="100%">
+              <text x="50%" y="70" text-anchor="middle" font-family="'Noto Sans Devanagari', sans-serif" font-size="64" font-weight="900" class="dhanyawad-stroke" stroke="#4A2C17" stroke-width="2" fill="transparent">धन्यवाद</text>
+            </svg>
+          </div>
+
+          <h2 class="outro-title">Thank you · CrunchUp Remix</h2>
+          <p class="outro-sub">
+            The next chapter in Indian snacking: Same Price, New Vibe. Built for dorms and desks.
+          </p>
+
+          <button class="replay-story-cta" onclick="replayEntireStory()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>Replay story ↻</span>
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Persistent Nav Bar -->
+    <div class="bottom-nav-bar" role="navigation" aria-label="Scene controls">
+      <button class="nav-btn" id="prevBtn" onclick="prevScene()" aria-label="Previous Scene">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        <span>Prev</span>
+      </button>
+
+      <div class="scene-indicator-text tabular-nums" id="sceneIndicator">
+        Scene <span id="currentSceneNum">0</span> of 9
+      </div>
+
+      <button class="nav-btn" id="nextBtn" onclick="nextScene()" aria-label="Next Scene">
+        <span>Next</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <div class="keyboard-hint" aria-hidden="true">
+        Keys: [←] [→] [Space]
+      </div>
+    </div>
+
+    <!-- Interactive JavaScript Engine -->
+    <script>
+      // State Management
+      let currentScene = 0;
+      const totalScenes = 9;
+      let soundEnabled = false;
+      let isSwapped = false;
+      let audioCtx = null;
+      let preloaderProgress = 0;
+      let preloaderInterval = null;
+
+      // Web Audio API Synthesizer (Zero external dependencies)
+      function initAudio() {
+        if (!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            audioCtx = new AudioContext();
+          }
+        }
+      }
+
+      function playCrunchSound(type = 'pop') {
+        if (!soundEnabled || !audioCtx) return;
+        try {
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          const now = audioCtx.currentTime;
+          if (type === 'pop') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(420, now);
+            osc.frequency.exponentialRampToValueAtTime(140, now + 0.12);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+            osc.start(now);
+            osc.stop(now + 0.12);
+          } else if (type === 'crunch') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(280, now);
+            osc.frequency.setValueAtTime(180, now + 0.05);
+            osc.frequency.exponentialRampToValueAtTime(60, now + 0.2);
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            osc.start(now);
+            osc.stop(now + 0.2);
+          } else if (type === 'swipe') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(220, now);
+            osc.frequency.exponentialRampToValueAtTime(540, now + 0.15);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+            osc.start(now);
+            osc.stop(now + 0.15);
+          }
+        } catch (e) {
+          // ignore audio failure
+        }
+      }
+
+      function toggleAudio() {
+        initAudio();
+        soundEnabled = !soundEnabled;
+        const icon = document.getElementById('audioIcon');
+        const text = document.getElementById('audioText');
+        if (soundEnabled) {
+          icon.textContent = '🔊';
+          text.textContent = 'Sound ON';
+          playCrunchSound('pop');
+        } else {
+          icon.textContent = '🔈';
+          text.textContent = 'Sound';
+        }
+      }
+
+      // Modal Dialog Controls (In-App, No alert())
+      function openInAppModal(title, message) {
+        playCrunchSound('pop');
+        const overlay = document.getElementById('inAppModalOverlay');
+        const t = document.getElementById('modalTitle');
+        const b = document.getElementById('modalBody');
+        if (t) t.textContent = title;
+        if (b) b.innerHTML = message;
+        if (overlay) overlay.classList.add('active');
+      }
+
+      function closeInAppModal() {
+        playCrunchSound('swipe');
+        const overlay = document.getElementById('inAppModalOverlay');
+        if (overlay) overlay.classList.remove('active');
+      }
+
+      function openSplitNotice(persona) {
+        if (persona === 'office') {
+          openInAppModal(
+            '⚡ Desk Buddy UPI Split Triggered!',
+            '<strong>₹20 Requested from Desk Colleague</strong><br/><br/>• A split request notification has been sent via UPI.<br/>• You pay ₹20, colleague pays ₹20.<br/>• <strong>Total ₹40 locked price.</strong><br/>• Rider ETA: 9 mins to Tech Park Reception.<br/><br/><em>"Ek side tumhari, ek meri!"</em>'
+          );
+        } else {
+          openInAppModal(
+            '🎓 Hostel Roommate Split Link Created!',
+            '<strong>₹20 Room 304 Midnight Request</strong><br/><br/>• Split link shared directly to Room 304 WhatsApp group.<br/>• ₹20 per student, zero midnight surge fee.<br/>• Rider arriving at Hostel Main Gate in 11 minutes.<br/><br/><em>Snap apart the Duo Canister halves cleanly upon arrival!</em>'
+          );
+        }
+      }
+
+      function inspectFlavourModal(flavour) {
+        if (flavour === 'delulu') {
+          openInAppModal(
+            '🌶️ Delulu Chilli (Hero Flavor)',
+            '<strong>Profile:</strong> Kashmiri mirch warmth, sweet roasted tomato, and habanero punch.<br/><br/><strong>Audience:</strong> Gen Z & Late-night young office teams.<br/><strong>Format:</strong> Duo Canister (Right side) & 40g Grab Pouch.<br/><strong>Crunch Index:</strong> 9.8 / 10'
+          );
+        } else if (flavour === 'masala') {
+          openInAppModal(
+            '✨ Main Character Masala',
+            '<strong>Profile:</strong> Roasted cumin, sun-dried amchur tang, and bold desi crackle.<br/><br/><strong>Audience:</strong> 4 PM desk breaks & library study groups.<br/><strong>Format:</strong> Duo Canister (Left side).<br/><strong>Crunch Index:</strong> 9.5 / 10'
+          );
+        } else if (flavour === 'peri') {
+          openInAppModal(
+            '🔥 Procrastination Peri-Peri',
+            '<strong>Profile:</strong> African bird\'s eye chilli, lemon peel zest, and smoked paprika.<br/><br/><strong>Audience:</strong> High crunch craving, campus hostel binges.<br/><strong>Format:</strong> 40g Grab Pouch Trio.<br/><strong>Crunch Index:</strong> 9.6 / 10'
+          );
+        }
+      }
+
+      // Generate Preloader Floating Crumbs
+      function initPreloaderCrumbs() {
+        const field = document.getElementById('crumbsField');
+        if (!field) return;
+        const colors = ['#E3A92B', '#C8321F', '#E8681F', '#F2C9A0'];
+        for (let i = 0; i < 28; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'crumb-dot';
+          const size = Math.random() * 8 + 4;
+          dot.style.width = size + 'px';
+          dot.style.height = size + 'px';
+          dot.style.left = Math.random() * 100 + '%';
+          dot.style.top = Math.random() * 100 + '%';
+          dot.style.background = colors[Math.floor(Math.random() * colors.length)];
+          dot.style.opacity = (Math.random() * 0.4 + 0.2).toString();
+          dot.style.animationDelay = (Math.random() * 3) + 's';
+          dot.style.animationDuration = (Math.random() * 3 + 3) + 's';
+          field.appendChild(dot);
+        }
+      }
+
+      // Scene 0: Preloader Run (≈3 seconds)
+      function runPreloader() {
+        initPreloaderCrumbs();
+        const fill = document.getElementById('preloaderFill');
+        const counter = document.getElementById('preloaderPercent');
+        preloaderProgress = 0;
+
+        if (preloaderInterval) clearInterval(preloaderInterval);
+
+        preloaderInterval = setInterval(() => {
+          preloaderProgress += 1;
+          if (fill) fill.style.width = preloaderProgress + '%';
+          if (counter) counter.textContent = preloaderProgress + '%';
+
+          if (preloaderProgress >= 100) {
+            clearInterval(preloaderInterval);
+            playCrunchSound('crunch');
+            triggerCurtainReveal();
+          }
+        }, 28);
+      }
+
+      // Curtain Wipe Animation to Reveal Scene 1
+      function triggerCurtainReveal() {
+        const curLeft = document.getElementById('curtainLeft');
+        const curRight = document.getElementById('curtainRight');
+
+        document.body.classList.add('curtains-closing');
+        setTimeout(() => {
+          document.body.classList.remove('curtains-closing');
+          document.body.classList.add('curtains-open');
+          goToScene(1);
+          setTimeout(() => {
+            document.body.classList.remove('curtains-open');
+          }, 800);
+        }, 350);
+      }
+
+      function skipIntro() {
+        if (preloaderInterval) clearInterval(preloaderInterval);
+        playCrunchSound('pop');
+        goToScene(1);
+      }
+
+      // Scene Navigation Core
+      function goToScene(index) {
+        if (index < 0 || index > totalScenes) return;
+
+        playCrunchSound('swipe');
+
+        const prevIndex = currentScene;
+        currentScene = index;
+
+        for (let i = 0; i <= totalScenes; i++) {
+          const el = document.getElementById('scene' + i);
+          if (el) {
+            if (i === currentScene) {
+              el.classList.add('active');
+            } else {
+              el.classList.remove('active');
+            }
+          }
+        }
+
+        const bar = document.getElementById('topProgressBar');
+        if (bar) {
+          const pct = (currentScene / totalScenes) * 100;
+          bar.style.width = pct + '%';
+          bar.setAttribute('aria-valuenow', currentScene);
+        }
+
+        const pills = document.querySelectorAll('.scene-pill');
+        pills.forEach((p, idx) => {
+          if (idx + 1 === currentScene) {
+            p.classList.add('active');
+          } else {
+            p.classList.remove('active');
+          }
+        });
+
+        const ind = document.getElementById('currentSceneNum');
+        if (ind) ind.textContent = currentScene;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        if (prevBtn) prevBtn.disabled = currentScene <= 0;
+        if (nextBtn) nextBtn.disabled = currentScene >= totalScenes;
+
+        if (currentScene === 3) {
+          runCanisterSequence();
+        } else if (currentScene === 5) {
+          startUgcCounters();
+        } else if (currentScene === 6) {
+          startBudgetCountUp();
+        } else if (currentScene === 8) {
+          startResultMetrics();
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function nextScene() {
+        if (currentScene < totalScenes) {
+          goToScene(currentScene + 1);
+        }
+      }
+
+      function prevScene() {
+        if (currentScene > 0) {
+          goToScene(currentScene - 1);
+        }
+      }
+
+      function replayEntireStory() {
+        goToScene(0);
+        runPreloader();
+      }
+
+      function scrollToQCExperience() {
+        goToScene(2);
+        setTimeout(() => {
+          const qc = document.getElementById('qcLiveExperience');
+          if (qc) qc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      }
+
+      // ======================================================================
+      // SCENE 3: THE DUO CANISTER HERO SEQUENCE (AUTO-PLAY + REPLAY)
+      // ======================================================================
+      function runCanisterSequence() {
+        const stage = document.getElementById('cinematicStage');
+        const rig = document.getElementById('canisterRig');
+        const flash = document.getElementById('cinematicFlash');
+        const arc = document.getElementById('sharingArcWrap');
+        const swapBtn = document.getElementById('swapFlavoursBtn');
+
+        rig.classList.remove('canister-split', 'canister-swapped', 'lids-popped');
+        stage.classList.remove('people-visible', 'sharing-visible');
+        isSwapped = false;
+        document.getElementById('swapLabel').textContent = 'Swap flavours';
+
+        // 1. Camera Push-In
+        rig.style.transform = 'scale(0.8) rotateY(-6deg) rotateX(3deg)';
+        setTimeout(() => {
+          rig.style.transform = 'scale(1.0) rotateY(0deg) rotateX(0deg)';
+        }, 100);
+
+        // 2. Both End-Lids Pop Off with Bounce (500ms)
+        setTimeout(() => {
+          rig.classList.add('lids-popped');
+          playCrunchSound('pop');
+        }, 800);
+
+        // 3. CINEMATIC BREAK: Screen shake (180ms) + White flash + Clean split
+        setTimeout(() => {
+          stage.classList.add('screen-shake');
+          flash.style.opacity = '0.4';
+          playCrunchSound('crunch');
+
+          setTimeout(() => {
+            flash.style.opacity = '0';
+            stage.classList.remove('screen-shake');
+            rig.classList.add('canister-split');
+          }, 180);
+        }, 1400);
+
+        // 4. Two Faceless People Slide In from Left and Right + Dotted Sharing Arc
+        setTimeout(() => {
+          stage.classList.add('people-visible');
+          stage.classList.add('sharing-visible');
+          playCrunchSound('pop');
+        }, 2200);
+      }
+
+      // 5. Interactive "⇄ Swap flavours" Button Action
+      function toggleSwapFlavours() {
+        const rig = document.getElementById('canisterRig');
+        const label = document.getElementById('swapLabel');
+        const icon = document.getElementById('swapIcon');
+
+        playCrunchSound('crunch');
+
+        isSwapped = !isSwapped;
+        if (isSwapped) {
+          rig.classList.add('canister-swapped');
+          label.textContent = 'Swap back';
+          icon.textContent = '⇄';
+        } else {
+          rig.classList.remove('canister-swapped');
+          label.textContent = 'Swap flavours';
+          icon.textContent = '⇄';
+        }
+
+        fireConfettiCrumbs();
+      }
+
+      function fireConfettiCrumbs() {
+        const stage = document.getElementById('cinematicStage');
+        for (let i = 0; i < 16; i++) {
+          const crumb = document.createElement('div');
+          crumb.style.position = 'absolute';
+          crumb.style.width = '6px';
+          crumb.style.height = '6px';
+          crumb.style.borderRadius = '50%';
+          crumb.style.background = i % 2 === 0 ? '#E3A92B' : '#C8321F';
+          crumb.style.left = '50%';
+          crumb.style.top = '50%';
+          crumb.style.pointerEvents = 'none';
+          crumb.style.zIndex = '40';
+          crumb.style.transition = 'all 600ms cubic-bezier(0.22, 1, 0.36, 1)';
+          stage.appendChild(crumb);
+
+          const angle = Math.random() * Math.PI * 2;
+          const dist = Math.random() * 120 + 40;
+          setTimeout(() => {
+            crumb.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px) scale(0)`;
+            crumb.style.opacity = '0';
+          }, 20);
+
+          setTimeout(() => crumb.remove(), 700);
+        }
+      }
+
+      // ======================================================================
+      // QUICK COMMERCE INTERACTIVE COMPARATOR CONTROLS
+      // ======================================================================
+      function switchQcView(view, btn) {
+        playCrunchSound('pop');
+        const tabs = document.querySelectorAll('.qc-view-tab');
+        tabs.forEach(t => t.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        const officeCard = document.getElementById('qcOfficeCard');
+        const campusCard = document.getElementById('qcCampusCard');
+        const grid = document.getElementById('qcSimGrid');
+
+        if (view === 'sideBySide') {
+          officeCard.style.display = 'flex';
+          campusCard.style.display = 'flex';
+          grid.style.gridTemplateColumns = window.innerWidth >= 900 ? '1fr 1fr' : '1fr';
+        } else if (view === 'officeOnly') {
+          officeCard.style.display = 'flex';
+          campusCard.style.display = 'none';
+          grid.style.gridTemplateColumns = '1fr';
+        } else if (view === 'campusOnly') {
+          officeCard.style.display = 'none';
+          campusCard.style.display = 'flex';
+          grid.style.gridTemplateColumns = '1fr';
+        }
+      }
+
+      // ======================================================================
+      // SCENE 5: NANO UGC ENGINE COUNTER & PERSONA CYCLING
+      // ======================================================================
+      let ugcInterval = null;
+      let personaTimer = null;
+      let personaState = 0;
+
+      function startUgcCounters() {
+        const counter = document.getElementById('ugcOrdersCount');
+        let count = 1420;
+        if (ugcInterval) clearInterval(ugcInterval);
+        ugcInterval = setInterval(() => {
+          count += Math.floor(Math.random() * 45 + 15);
+          if (counter) counter.textContent = count.toLocaleString('en-IN');
+        }, 120);
+
+        if (personaTimer) clearInterval(personaTimer);
+        personaTimer = setInterval(() => {
+          personaState = (personaState + 1) % 2;
+          const label = document.getElementById('personaCycleLabel');
+          const bubble = document.getElementById('reelCommentBubble');
+          if (personaState === 0) {
+            if (label) label.textContent = "Active Persona: 🎓 Campus Creator (Hostel Dorm)";
+            if (bubble) bubble.textContent = '"Hostel study room split! Masala side is elite 🔥"';
+          } else {
+            if (label) label.textContent = "Active Persona: 🏢 Tech Park HR Creator (Desk Break)";
+            if (bubble) bubble.textContent = '"4 PM slump saved with my desk buddy! No mess on laptops"';
+          }
+        }, 4000);
+      }
+
+      // ======================================================================
+      // SCENE 6: SANKEY TOOLTIP & BUDGET COUNT-UP
+      // ======================================================================
+      function showSankeyTip(e, text) {
+        const tip = document.getElementById('sankeyTooltip');
+        if (!tip) return;
+        tip.textContent = text;
+        tip.style.opacity = '1';
+        tip.style.left = (e.pageX + 12) + 'px';
+        tip.style.top = (e.pageY - 30) + 'px';
+      }
+
+      function hideSankeyTip() {
+        const tip = document.getElementById('sankeyTooltip');
+        if (tip) tip.style.opacity = '0';
+      }
+
+      function startBudgetCountUp() {
+        const el = document.getElementById('budgetCountUp');
+        let val = 0;
+        const target = 300000;
+        const step = 7500;
+        const timer = setInterval(() => {
+          val += step;
+          if (val >= target) {
+            val = target;
+            clearInterval(timer);
+          }
+          if (el) el.textContent = '₹' + val.toLocaleString('en-IN');
+        }, 25);
+      }
+
+      // ======================================================================
+      // SCENE 8: RESULT METRICS COUNT-UP
+      // ======================================================================
+      function startResultMetrics() {
+        const path = document.getElementById('chartPath');
+        if (path) {
+          path.style.strokeDasharray = '800';
+          path.style.strokeDashoffset = '800';
+          setTimeout(() => {
+            path.style.transition = 'stroke-dashoffset 1.5s cubic-bezier(0.22, 1, 0.36, 1)';
+            path.style.strokeDashoffset = '0';
+          }, 150);
+        }
+      }
+
+      // Keyboard Controls
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+          e.preventDefault();
+          nextScene();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prevScene();
+        } else if (e.key === 'Escape') {
+          closeInAppModal();
+        }
+      });
+
+      // Window resize adaptation
+      window.addEventListener('resize', () => {
+        const grid = document.getElementById('qcSimGrid');
+        if (grid && window.innerWidth < 900) {
+          grid.style.gridTemplateColumns = '1fr';
+        }
+      });
+
+      // Initialize on load
+      window.addEventListener('DOMContentLoaded', () => {
+        runPreloader();
+      });
+    </script>
+  </body>
+</html>
