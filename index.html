@@ -2132,7 +2132,7 @@
         <button class="scene-pill" onclick="goToScene(4)">4. Flavours</button>
         <button class="scene-pill" onclick="goToScene(5)">5. UGC Engine</button>
         <button class="scene-pill" onclick="goToScene(6)">6. ₹3L Budget</button>
-        <button class="scene-pill" onclick="goToScene(7)">7. Limited Edition</button>
+        <button class="scene-pill" onclick="goToScene(7)">7. पंचायत × CrunchUp</button>
         <button class="scene-pill" onclick="goToScene(8)">8. Results</button>
         <button class="scene-pill" onclick="goToScene(9)">9. Outro</button>
       </nav>
@@ -2874,10 +2874,11 @@
       </section>
 
       <!-- ======================================================================
-           SCENE 5: NANO UGC ENGINE (ANIMATED)
+           SCENE 5: NANO UGC ENGINE (ANIMATED OFFICE WEB & OUTER CASCADE)
            ====================================================================== -->
       <section class="scene" id="scene5" aria-label="Scene 5: Nano UGC Engine">
-        <div class="ugc-engine-grid">
+        <div class="ugc-engine-grid" style="grid-template-columns: 0.75fr 1.25fr; max-width: 1220px;">
+          <!-- Left: Phone Frame Mockup (Kept as user requested: "bilkul perfect hai") -->
           <div class="ugc-phone-wrapper stagger-item">
             <div class="ugc-phone-frame">
               <div class="phone-notch"></div>
@@ -2910,83 +2911,216 @@
             </div>
 
             <div class="creator-persona-indicator" id="personaCycleLabel">
-              Active Persona: 🎓 Campus Creator (Hostel Dorm)
+              Active Reel: 🏢 Tech Park Creator (Desk Break Viral Hit)
             </div>
           </div>
 
-          <div class="venn-conversion-area stagger-item">
-            <div class="section-heading-block" style="text-align:left; margin-bottom:20px;">
-              <div class="section-kicker">Performance Flywheel</div>
-              <h2 class="section-main-title" style="font-size:2.2rem;">Nano UGC Engine</h2>
-              <p class="section-subtext" style="margin:0;">
-                High-trust creators delivering 6–12% organic engagement right into 10-minute Quick Commerce carts.
+          <!-- Right: Office Internal Web (Solid Lines) & Outer Network Cascade (Dotted Lines) -->
+          <div class="venn-conversion-area stagger-item" style="text-align:left; align-items:stretch; width:100%;">
+            <div class="section-heading-block" style="text-align:left; margin-bottom:16px;">
+              <div class="section-kicker">Organic Virality Architecture</div>
+              <h2 class="section-main-title" style="font-size:2rem; margin-bottom:6px;">Reel ➔ Office Web ➔ Outer Network</h2>
+              <p class="section-subtext" style="margin:0; font-size:0.95rem;">
+                From the viral reel, colleagues inside offices connect via <strong>solid lines</strong> (intra-office web). Then through <strong>dotted lines</strong>, they carry the vibe into their outer networks—igniting secondary viral growth.
               </p>
             </div>
 
-            <div class="venn-diagram-svg-wrap">
-              <svg viewBox="0 0 440 280" width="100%" height="100%">
-                <circle cx="170" cy="120" r="85" fill="rgba(15, 92, 77, 0.25)" stroke="#0F5C4D" stroke-width="2" class="venn-circle"/>
-                <text x="120" y="80" font-size="10" font-weight="700" fill="#0F5C4D">A. Nano creators</text>
-                <text x="120" y="93" font-size="8" fill="#4A2C17">Campus & Office</text>
-
-                <circle cx="270" cy="120" r="85" fill="rgba(200, 50, 31, 0.22)" stroke="#C8321F" stroke-width="2" class="venn-circle"/>
-                <text x="320" y="80" font-size="10" font-weight="700" fill="#C8321F">B. Right Audience</text>
-                <text x="320" y="93" font-size="8" fill="#4A2C17">Gen Z & Office</text>
-
-                <circle cx="220" cy="190" r="85" fill="rgba(227, 169, 43, 0.25)" stroke="#E3A92B" stroke-width="2" class="venn-circle"/>
-                <text x="220" y="245" font-size="10" font-weight="700" fill="#B37E12" text-anchor="middle">C. High-Trust UGC</text>
-                <text x="220" y="258" font-size="8" fill="#4A2C17" text-anchor="middle">6-12% engagement</text>
-
-                <circle cx="220" cy="145" r="28" fill="#E8681F" opacity="0.85">
-                  <animate attributeName="r" values="26;30;26" dur="2s" repeatCount="indefinite"/>
-                </circle>
-                <text x="220" y="142" font-size="8" font-weight="900" fill="#FFFFFF" text-anchor="middle">RIGHT REACH,</text>
-                <text x="220" y="152" font-size="7" font-weight="800" fill="#FFFFFF" text-anchor="middle">NOT BIG REACH</text>
-              </svg>
-            </div>
-
-            <div class="ugc-conversion-stream-card">
-              <div class="stream-header">
-                <div class="stream-title">Live UGC ➔ Cart Conversion Stream</div>
-                <div class="orders-counter-chip tabular-nums">
-                  <span id="ugcOrdersCount">1,420</span> orders from UGC
+            <!-- Interactive Network SVG Container -->
+            <div style="background:#FFFFFF; border:1px solid var(--border-soft); border-radius:20px; padding:18px 20px; box-shadow:var(--shadow-subtle); position:relative;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--orange);"></span>
+                  <span style="font-size:0.85rem; font-weight:800; color:var(--deep-brown);">Live Viral Transmission Web</span>
                 </div>
+                <button class="nav-btn" style="padding:4px 12px; font-size:0.75rem;" onclick="triggerNetworkRipple()">
+                  <span>▶ Replay Viral Ripple</span>
+                </button>
               </div>
 
-              <div class="dots-stream-track" id="dotsStreamTrack">
-                <svg width="100%" height="100%" viewBox="0 0 500 48" id="dotsSvg">
-                  <path d="M 10 24 Q 250 10 450 24" stroke="rgba(232, 104, 31, 0.3)" stroke-dasharray="4 4" fill="none"/>
-                  
-                  <!-- Continuous drifting particles -->
-                  <circle cx="30" cy="24" r="5" fill="#A89F91">
-                    <animate attributeName="cx" from="20" to="440" dur="4s" repeatCount="indefinite"/>
-                    <animate attributeName="fill" values="#A89F91;#A89F91;#E8681F;#E8681F" keyTimes="0;0.4;0.6;1" dur="4s" repeatCount="indefinite"/>
+              <!-- SVG Network Web -->
+              <div style="width:100%; overflow:hidden; border-radius:14px; background:radial-gradient(circle at 50% 50%, #FFFDF8 0%, #FFF5EB 100%); border:1px solid var(--border-soft);">
+                <svg viewBox="0 0 620 370" width="100%" height="370" id="networkWebSvg">
+                  <!-- Outer Network Ambient Ripple Waves (वहां से चीज फैल रही है) -->
+                  <g id="outerRipplesLayer">
+                    <circle cx="75" cy="65" r="28" fill="none" stroke="#C8321F" stroke-width="1.5" opacity="0.4">
+                      <animate attributeName="r" values="20;38;20" dur="3s" repeatCount="indefinite"/>
+                      <animate attributeName="opacity" values="0.6;0;0.6" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="530" cy="65" r="28" fill="none" stroke="#C8321F" stroke-width="1.5" opacity="0.4">
+                      <animate attributeName="r" values="20;38;20" dur="3.2s" begin="0.5s" repeatCount="indefinite"/>
+                      <animate attributeName="opacity" values="0.6;0;0.6" dur="3.2s" begin="0.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="550" cy="205" r="28" fill="none" stroke="#C8321F" stroke-width="1.5" opacity="0.4">
+                      <animate attributeName="r" values="20;38;20" dur="2.8s" begin="1s" repeatCount="indefinite"/>
+                      <animate attributeName="opacity" values="0.6;0;0.6" dur="2.8s" begin="1s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="485" cy="325" r="28" fill="none" stroke="#C8321F" stroke-width="1.5" opacity="0.4">
+                      <animate attributeName="r" values="20;38;20" dur="3.4s" begin="0.8s" repeatCount="indefinite"/>
+                      <animate attributeName="opacity" values="0.6;0;0.6" dur="3.4s" begin="0.8s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="85" cy="315" r="28" fill="none" stroke="#C8321F" stroke-width="1.5" opacity="0.4">
+                      <animate attributeName="r" values="20;38;20" dur="3.1s" begin="1.2s" repeatCount="indefinite"/>
+                      <animate attributeName="opacity" values="0.6;0;0.6" dur="3.1s" begin="1.2s" repeatCount="indefinite"/>
+                    </circle>
+                  </g>
+
+                  <!-- Office Floor Boundary Zone -->
+                  <rect x="150" y="70" width="300" height="230" rx="28" fill="#FFFFFF" fill-opacity="0.75" stroke="#E3A92B" stroke-width="1.5" stroke-dasharray="6 6"/>
+                  <text x="300" y="92" font-size="9" font-weight="800" fill="#4A2C17" text-anchor="middle" letter-spacing="1">🏢 TECH PARK OFFICE FLOOR (INTERNAL WEB)</text>
+
+                  <!-- 1. DOTTED LINES: Office Nodes ➔ Outer Networks (stroke-dasharray="6,4") -->
+                  <g id="dottedOuterLines" stroke="#C8321F" stroke-width="2" stroke-dasharray="6,4" opacity="0.75">
+                    <!-- From Dev (210,150) to Alumni (75,65) -->
+                    <line x1="210" y1="150" x2="75" y2="65" />
+                    <!-- From Designer (310,125) to Flatmates (530,65) -->
+                    <line x1="310" y1="125" x2="530" y2="65" />
+                    <!-- From Tech Lead (390,195) to Cross-Tech Park (550,205) -->
+                    <line x1="390" y1="195" x2="550" y2="205" />
+                    <!-- From Product Mgr (330,265) to Gym/Sports (485,325) -->
+                    <line x1="330" y1="265" x2="485" y2="325" />
+                    <!-- From HR Specialist (215,245) to Campus Circles (85,315) -->
+                    <line x1="215" y1="245" x2="85" y2="315" />
+                  </g>
+
+                  <!-- 2. NORMAL SOLID LINES: Intra-Office Web Mesh -->
+                  <g id="solidOfficeLines" stroke="#E8681F" stroke-width="2.8">
+                    <!-- Colleague Web Mesh (Solid lines between desk workers) -->
+                    <line x1="210" y1="150" x2="310" y2="125" />
+                    <line x1="310" y1="125" x2="390" y2="195" />
+                    <line x1="390" y1="195" x2="330" y2="265" />
+                    <line x1="330" y1="265" x2="215" y2="245" />
+                    <line x1="215" y1="245" x2="210" y2="150" />
+                    <!-- Cross-office diagonal solid lines -->
+                    <line x1="210" y1="150" x2="390" y2="195" stroke="#0F5C4D" stroke-width="2.2" opacity="0.75"/>
+                    <line x1="310" y1="125" x2="330" y2="265" stroke="#0F5C4D" stroke-width="2.2" opacity="0.75"/>
+                  </g>
+
+                  <!-- Animated Transmission Pulse Beams along solid lines -->
+                  <circle cx="260" cy="137" r="4.5" fill="#E8681F">
+                    <animate attributeName="cx" values="210;310;210" dur="2.4s" repeatCount="indefinite"/>
+                    <animate attributeName="cy" values="150;125;150" dur="2.4s" repeatCount="indefinite"/>
                   </circle>
-                  <circle cx="120" cy="22" r="5" fill="#A89F91">
-                    <animate attributeName="cx" from="20" to="440" dur="4s" begin="1s" repeatCount="indefinite"/>
-                    <animate attributeName="fill" values="#A89F91;#A89F91;#E8681F;#E8681F" keyTimes="0;0.4;0.6;1" dur="4s" begin="1s" repeatCount="indefinite"/>
+                  <circle cx="350" cy="160" r="4.5" fill="#E8681F">
+                    <animate attributeName="cx" values="310;390;310" dur="2.8s" repeatCount="indefinite"/>
+                    <animate attributeName="cy" values="125;195;125" dur="2.8s" repeatCount="indefinite"/>
                   </circle>
-                  <circle cx="220" cy="20" r="5" fill="#E8681F">
-                    <animate attributeName="cx" from="20" to="440" dur="4s" begin="2s" repeatCount="indefinite"/>
-                    <animate attributeName="fill" values="#A89F91;#A89F91;#E8681F;#E8681F" keyTimes="0;0.4;0.6;1" dur="4s" begin="2s" repeatCount="indefinite"/>
-                  </circle>
-                  <circle cx="320" cy="22" r="5" fill="#E8681F">
-                    <animate attributeName="cx" from="20" to="440" dur="4s" begin="3s" repeatCount="indefinite"/>
-                    <animate attributeName="fill" values="#A89F91;#A89F91;#E8681F;#E8681F" keyTimes="0;0.4;0.6;1" dur="4s" begin="3s" repeatCount="indefinite"/>
+                  <circle cx="272" cy="255" r="4.5" fill="#E8681F">
+                    <animate attributeName="cx" values="215;330;215" dur="2.6s" repeatCount="indefinite"/>
+                    <animate attributeName="cy" values="245;265;245" dur="2.6s" repeatCount="indefinite"/>
                   </circle>
 
-                  <!-- Cart icon at right end -->
-                  <g transform="translate(460, 14)">
-                    <rect x="0" y="4" width="22" height="16" rx="3" fill="#E8681F"/>
-                    <circle cx="5" cy="22" r="3" fill="#4A2C17"/>
-                    <circle cx="17" cy="22" r="3" fill="#4A2C17"/>
-                    <path d="M-4 0 L0 4" stroke="#4A2C17" stroke-width="2"/>
+                  <!-- Discovery Lead Beam from Reel (Left) into Dev Node -->
+                  <path d="M 0 150 Q 110 130 210 150" stroke="#E3A92B" stroke-width="3" stroke-dasharray="4 4" fill="none"/>
+                  <circle cx="110" cy="140" r="5" fill="#E3A92B">
+                    <animate attributeName="cx" values="0;210" dur="2s" repeatCount="indefinite"/>
+                    <animate attributeName="cy" values="150;150" dur="2s" repeatCount="indefinite"/>
+                  </circle>
+
+                  <!-- 3. INNER OFFICE NODES (Desk Buddies & Teams) -->
+                  <!-- Node 1: Dev Desk Buddy -->
+                  <g transform="translate(210,150)" cursor="pointer" onclick="inspectNetworkNode('dev')">
+                    <circle cx="0" cy="0" r="17" fill="#E8681F" stroke="#FFFFFF" stroke-width="2.5"/>
+                    <text x="0" y="4" font-size="11" font-weight="900" fill="#FFFFFF" text-anchor="middle">💻</text>
+                    <rect x="-35" y="20" width="70" height="14" rx="4" fill="#FFFFFF" stroke="rgba(74,44,23,0.15)"/>
+                    <text x="0" y="30" font-size="7.5" font-weight="800" fill="#4A2C17" text-anchor="middle">Desk Buddy</text>
+                  </g>
+
+                  <!-- Node 2: UX Designer -->
+                  <g transform="translate(310,125)" cursor="pointer" onclick="inspectNetworkNode('designer')">
+                    <circle cx="0" cy="0" r="17" fill="#E8681F" stroke="#FFFFFF" stroke-width="2.5"/>
+                    <text x="0" y="4" font-size="11" font-weight="900" fill="#FFFFFF" text-anchor="middle">🎨</text>
+                    <rect x="-36" y="20" width="72" height="14" rx="4" fill="#FFFFFF" stroke="rgba(74,44,23,0.15)"/>
+                    <text x="0" y="30" font-size="7.5" font-weight="800" fill="#4A2C17" text-anchor="middle">UX Designer</text>
+                  </g>
+
+                  <!-- Node 3: Tech Lead -->
+                  <g transform="translate(390,195)" cursor="pointer" onclick="inspectNetworkNode('techlead')">
+                    <circle cx="0" cy="0" r="17" fill="#0F5C4D" stroke="#FFFFFF" stroke-width="2.5"/>
+                    <text x="0" y="4" font-size="11" font-weight="900" fill="#FFFFFF" text-anchor="middle">⚡</text>
+                    <rect x="-34" y="20" width="68" height="14" rx="4" fill="#FFFFFF" stroke="rgba(74,44,23,0.15)"/>
+                    <text x="0" y="30" font-size="7.5" font-weight="800" fill="#4A2C17" text-anchor="middle">Tech Lead</text>
+                  </g>
+
+                  <!-- Node 4: Product Manager -->
+                  <g transform="translate(330,265)" cursor="pointer" onclick="inspectNetworkNode('pm')">
+                    <circle cx="0" cy="0" r="17" fill="#E8681F" stroke="#FFFFFF" stroke-width="2.5"/>
+                    <text x="0" y="4" font-size="11" font-weight="900" fill="#FFFFFF" text-anchor="middle">📊</text>
+                    <rect x="-35" y="20" width="70" height="14" rx="4" fill="#FFFFFF" stroke="rgba(74,44,23,0.15)"/>
+                    <text x="0" y="30" font-size="7.5" font-weight="800" fill="#4A2C17" text-anchor="middle">Product Mgr</text>
+                  </g>
+
+                  <!-- Node 5: HR Specialist -->
+                  <g transform="translate(215,245)" cursor="pointer" onclick="inspectNetworkNode('hr')">
+                    <circle cx="0" cy="0" r="17" fill="#E3A92B" stroke="#FFFFFF" stroke-width="2.5"/>
+                    <text x="0" y="4" font-size="11" font-weight="900" fill="#FFFFFF" text-anchor="middle">☕</text>
+                    <rect x="-38" y="20" width="76" height="14" rx="4" fill="#FFFFFF" stroke="rgba(74,44,23,0.15)"/>
+                    <text x="0" y="30" font-size="7.5" font-weight="800" fill="#4A2C17" text-anchor="middle">HR Specialist</text>
+                  </g>
+
+                  <!-- 4. OUTER NETWORK CASPER NODES (Spillover via Dotted Lines) -->
+                  <!-- Outer A: Hostel Alumni Group -->
+                  <g transform="translate(75,65)" cursor="pointer" onclick="inspectNetworkNode('alumni')">
+                    <circle cx="0" cy="0" r="19" fill="#FFF0E6" stroke="#C8321F" stroke-width="2.5"/>
+                    <text x="0" y="4" font-size="11" font-weight="900" fill="#C8321F" text-anchor="middle">🎓</text>
+                    <rect x="-42" y="22" width="84" height="15" rx="4" fill="#FFFFFF" stroke="#C8321F"/>
+                    <text x="0" y="33" font-size="7.5" font-weight="800" fill="#C8321F" text-anchor="middle">Hostel Alumni</text>
+                  </g>
+
+                  <!-- Outer B: Flatmates Circle -->
+                  <g transform="translate(530,65)" cursor="pointer" onclick="inspectNetworkNode('flatmates')">
+                    <circle cx="0" cy="0" r="19" fill="#FFF0E6" stroke="#C8321F" stroke-width="2.5"/>
+                    <text x="0" y="4" font-size="11" font-weight="900" fill="#C8321F" text-anchor="middle">🏠</text>
+                    <rect x="-40" y="22" width="80" height="15" rx="4" fill="#FFFFFF" stroke="#C8321F"/>
+                    <text x="0" y="33" font-size="7.5" font-weight="800" fill="#C8321F" text-anchor="middle">Flatmates Circle</text>
+                  </g>
+
+                  <!-- Outer C: Cross-Tech Park Colleagues -->
+                  <g transform="translate(550,205)" cursor="pointer" onclick="inspectNetworkNode('crosstech')">
+                    <circle cx="0" cy="0" r="19" fill="#FFF0E6" stroke="#C8321F" stroke-width="2.5"/>
+                    <text x="0" y="4" font-size="11" font-weight="900" fill="#C8321F" text-anchor="middle">🏢</text>
+                    <rect x="-44" y="22" width="88" height="15" rx="4" fill="#FFFFFF" stroke="#C8321F"/>
+                    <text x="0" y="33" font-size="7.5" font-weight="800" fill="#C8321F" text-anchor="middle">Other Tech Parks</text>
+                  </g>
+
+                  <!-- Outer D: Weekend Gym / Sports Community -->
+                  <g transform="translate(485,325)" cursor="pointer" onclick="inspectNetworkNode('gym')">
+                    <circle cx="0" cy="0" r="19" fill="#FFF0E6" stroke="#C8321F" stroke-width="2.5"/>
+                    <text x="0" y="4" font-size="11" font-weight="900" fill="#C8321F" text-anchor="middle">🏃</text>
+                    <rect x="-42" y="22" width="84" height="15" rx="4" fill="#FFFFFF" stroke="#C8321F"/>
+                    <text x="0" y="33" font-size="7.5" font-weight="800" fill="#C8321F" text-anchor="middle">Gym / Weekend</text>
+                  </g>
+
+                  <!-- Outer E: Campus WhatsApp Circles -->
+                  <g transform="translate(85,315)" cursor="pointer" onclick="inspectNetworkNode('campus')">
+                    <circle cx="0" cy="0" r="19" fill="#FFF0E6" stroke="#C8321F" stroke-width="2.5"/>
+                    <text x="0" y="4" font-size="11" font-weight="900" fill="#C8321F" text-anchor="middle">📱</text>
+                    <rect x="-46" y="22" width="92" height="15" rx="4" fill="#FFFFFF" stroke="#C8321F"/>
+                    <text x="0" y="33" font-size="7.5" font-weight="800" fill="#C8321F" text-anchor="middle">Campus WhatsApp</text>
                   </g>
                 </svg>
               </div>
 
-              <div class="ugc-budget-math-chip tabular-nums">
-                30 creators × ₹3,000 = <strong>₹90,000</strong> (30% of total marketing budget)
+              <!-- Web Transmission Summary Footnote Strip -->
+              <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-top:14px; padding-top:12px; border-top:1px solid var(--border-soft);">
+                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:14px; font-size:0.8rem; font-weight:700;">
+                  <span style="display:flex; align-items:center; gap:6px; color:var(--orange);">
+                    <span style="display:inline-block; width:18px; height:3px; background:var(--orange); border-radius:2px;"></span>
+                    <span><strong>Normal Solid Lines:</strong> Internal Office Web (Desk buddies & floor sharing)</span>
+                  </span>
+                  <span style="display:flex; align-items:center; gap:6px; color:var(--chilli-red);">
+                    <span style="display:inline-block; width:18px; height:2px; border-top:2px dashed var(--chilli-red);"></span>
+                    <span><strong>Dotted Lines:</strong> Outer Network Spillover (Alumni, flatmates & campus virality)</span>
+                  </span>
+                </div>
+
+                <!-- Credible, Steady Orders Metric (No constant spammy updates) -->
+                <div class="orders-counter-chip tabular-nums" style="font-size:0.95rem; padding:4px 12px;">
+                  <strong>1,420</strong> verified organic conversions
+                </div>
+              </div>
+
+              <div class="ugc-budget-math-chip tabular-nums" style="margin-top:10px; width:100%; box-sizing:border-box;">
+                25 creators × ₹3,000 = <strong>₹75,000</strong> (25% of ₹3L budget) generating self-sustaining multi-tier viral propagation.
               </div>
             </div>
           </div>
@@ -2994,15 +3128,15 @@
       </section>
 
       <!-- ======================================================================
-           SCENE 6: WHERE THE ₹3,00,000 GOES (SANKEY)
+           SCENE 6: WHERE THE ₹3,00,000 GOES (SANKEY & DELHI NCR BUDGET)
            ====================================================================== -->
       <section class="scene" id="scene6" aria-label="Scene 6: Budget Allocation Sankey">
         <div class="sankey-section-wrap">
           <div class="section-heading-block">
-            <div class="section-kicker">Financial Discipline</div>
-            <h2 class="section-main-title">Where the ₹3,00,000 Goes</h2>
+            <div class="section-kicker">Financial Discipline · Delhi NCR</div>
+            <h2 class="section-main-title">₹3L Budget Allocation (Delhi NCR)</h2>
             <p class="section-subtext">
-              Zero waste. Highly targeted spend across creator-led velocity, digital intent, sampling, and launch assets.
+              Zero waste allocation. Measured spend across nano-creator UGC, digital search & AI intent, sampling, retail expansion, and Panchayat launch assets.
             </p>
           </div>
 
@@ -3014,195 +3148,368 @@
                 Total Budget: <span id="budgetCountUp">₹3,00,000</span>
               </div>
               <div style="font-size:0.9rem; color:var(--deep-brown); opacity:0.85;">
-                Hover any ribbon to inspect exact capital allocation & percentage share.
+                Hover any flow ribbon or inspect the verified allocation breakdown below.
               </div>
             </div>
 
             <div class="sankey-svg-wrapper">
-              <svg viewBox="0 0 960 420" width="960" height="420" id="sankeySvg">
+              <svg viewBox="0 0 960 460" width="960" height="460" id="sankeySvg">
                 <defs>
-                  <linearGradient id="gradDigital" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
-                    <stop offset="100%" stop-color="#2A9D8F" stop-opacity="0.85"/>
-                  </linearGradient>
                   <linearGradient id="gradUgc" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
-                    <stop offset="100%" stop-color="#E76F51" stop-opacity="0.85"/>
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#E76F51" stop-opacity="0.9"/>
+                  </linearGradient>
+                  <linearGradient id="gradDigital" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#2A9D8F" stop-opacity="0.9"/>
                   </linearGradient>
                   <linearGradient id="gradSample" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
-                    <stop offset="100%" stop-color="#E9C46A" stop-opacity="0.85"/>
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#E9C46A" stop-opacity="0.9"/>
                   </linearGradient>
                   <linearGradient id="gradRetail" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
-                    <stop offset="100%" stop-color="#9C89B8" stop-opacity="0.85"/>
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#9C89B8" stop-opacity="0.9"/>
                   </linearGradient>
                   <linearGradient id="gradDesign" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
-                    <stop offset="100%" stop-color="#B0C4B1" stop-opacity="0.85"/>
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#B0C4B1" stop-opacity="0.9"/>
                   </linearGradient>
-                  <linearGradient id="gradDoomsday" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
-                    <stop offset="100%" stop-color="#F4A261" stop-opacity="0.85"/>
+                  <linearGradient id="gradPanchayat" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#B3471A" stop-opacity="0.9"/>
                   </linearGradient>
                   <linearGradient id="gradReserve" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.8"/>
-                    <stop offset="100%" stop-color="#A8DADC" stop-opacity="0.85"/>
-                  </linearGradient>
-                  <linearGradient id="gradMonth1Extra" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#2A9D8F" stop-opacity="0.85"/>
-                    <stop offset="100%" stop-color="#0F5C4D" stop-opacity="0.85"/>
+                    <stop offset="0%" stop-color="#E8681F" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#A8DADC" stop-opacity="0.9"/>
                   </linearGradient>
                 </defs>
 
-                <!-- SOURCE NODE -->
+                <!-- SOURCE NODE: ₹3,00,000 (Height 340px) -->
                 <rect x="40" y="30" width="30" height="340" rx="4" fill="#E8681F"/>
-                <text x="30" y="200" font-size="13" font-weight="800" fill="#4A2C17" text-anchor="middle" transform="rotate(-90 30 200)">BUDGET ₹3,00,000</text>
+                <text x="30" y="200" font-size="13" font-weight="800" fill="#4A2C17" text-anchor="middle" transform="rotate(-90 30 200)">BUDGET ₹3,00,000 (100%)</text>
 
-                <!-- 1. Digital Ads ₹75,000 (25%) -->
-                <path d="M 70 30 C 260 30, 360 40, 520 40 L 520 115 C 360 115, 260 105, 70 105 Z" fill="url(#gradDigital)" class="sankey-band" onmousemove="showSankeyTip(event, 'Digital Ads: ₹75,000 (25%)')" onmouseleave="hideSankeyTip()"/>
-                
-                <path d="M 550 40 C 650 40, 720 30, 800 30 L 800 75 C 720 75, 650 85, 550 85 Z" fill="#2A9D8F" opacity="0.8" class="sankey-band" onmousemove="showSankeyTip(event, 'Google Search Ads: ₹45,000 (60% of Digital)')" onmouseleave="hideSankeyTip()"/>
-                <path d="M 550 85 C 650 85, 720 100, 800 100 L 800 130 C 720 130, 650 115, 550 115 Z" fill="#45B69C" opacity="0.8" class="sankey-band" onmousemove="showSankeyTip(event, 'ChatGPT / AI Ads: ₹30,000 (40% of Digital)')" onmouseleave="hideSankeyTip()"/>
+                <!-- 1. Nano-Creator UGC ₹75,000 (25% = 85px) -->
+                <path d="M 70 30 C 350 30, 480 25, 780 25 L 780 110 C 480 110, 350 115, 70 115 Z" fill="url(#gradUgc)" class="sankey-band" onmousemove="showSankeyTip(event, 'Nano-Creator UGC: ₹75,000 (25%) · 25 creators × ₹3k')" onmouseleave="hideSankeyTip()"/>
+                <rect x="780" y="25" width="20" height="85" rx="3" fill="#E76F51"/>
+                <text x="810" y="65" font-size="11" font-weight="800" fill="#4A2C17">Nano-Creator UGC ₹75,000 (25%)</text>
+                <text x="810" y="82" font-size="9" font-weight="600" fill="#4A2C17" opacity="0.8">25 creators × ₹3,000</text>
 
-                <rect x="520" y="40" width="30" height="75" rx="3" fill="#2A9D8F"/>
-                <text x="535" y="132" font-size="10" font-weight="700" fill="#2A9D8F" text-anchor="middle">Digital ₹75k (25%)</text>
-                <text x="810" y="55" font-size="10" font-weight="700" fill="#4A2C17">Google ₹45k</text>
-                <text x="810" y="118" font-size="10" font-weight="700" fill="#4A2C17">ChatGPT ₹30k</text>
+                <!-- 2. Digital & AI Ads ₹60,000 (20% = 68px) -->
+                <path d="M 70 115 C 260 115, 360 125, 520 125 L 520 193 C 360 193, 260 183, 70 183 Z" fill="url(#gradDigital)" class="sankey-band" onmousemove="showSankeyTip(event, 'Digital & AI Ads: ₹60,000 (20%) · Search & Conversational Ads')" onmouseleave="hideSankeyTip()"/>
+                <rect x="520" y="125" width="24" height="68" rx="3" fill="#2A9D8F"/>
+                <text x="532" y="206" font-size="9.5" font-weight="700" fill="#2A9D8F" text-anchor="middle">Digital & AI ₹60k</text>
 
-                <!-- 2. Nano UGC Creators ₹90,000 (30%) -->
-                <path d="M 70 105 C 320 105, 480 150, 800 150 L 800 240 C 480 240, 320 195, 70 195 Z" fill="url(#gradUgc)" class="sankey-band" onmousemove="showSankeyTip(event, 'Nano UGC Creators: ₹90,000 (30%) · 30 creators × ₹3k')" onmouseleave="hideSankeyTip()"/>
-                <rect x="800" y="150" width="20" height="90" rx="3" fill="#E76F51"/>
-                <text x="830" y="200" font-size="11" font-weight="800" fill="#4A2C17">Nano UGC ₹90k (30%)</text>
+                <!-- Splits to Google Search & ChatGPT / AI Ads -->
+                <path d="M 544 125 C 640 125, 700 120, 780 120 L 780 161 C 700 161, 640 166, 544 166 Z" fill="#2A9D8F" opacity="0.85" class="sankey-band" onmousemove="showSankeyTip(event, 'Google Search Ads: ₹36,000 (60% of Digital)')" onmouseleave="hideSankeyTip()"/>
+                <rect x="780" y="120" width="20" height="41" rx="3" fill="#2A9D8F"/>
+                <text x="810" y="144" font-size="10" font-weight="700" fill="#4A2C17">Google Search ₹36k (12%)</text>
 
-                <!-- 3. Sampling ₹45,000 (15%) -->
-                <path d="M 70 195 C 340 195, 500 255, 800 255 L 800 300 C 500 300, 340 240, 70 240 Z" fill="url(#gradSample)" class="sankey-band" onmousemove="showSankeyTip(event, 'Sampling Drives: ₹45,000 (15%)')" onmouseleave="hideSankeyTip()"/>
-                <rect x="800" y="255" width="20" height="45" rx="3" fill="#E9C46A"/>
-                <text x="830" y="280" font-size="11" font-weight="800" fill="#4A2C17">Sampling ₹45k (15%)</text>
+                <path d="M 544 166 C 640 166, 700 170, 780 170 L 780 197 C 700 197, 640 193, 544 193 Z" fill="#45B69C" opacity="0.85" class="sankey-band" onmousemove="showSankeyTip(event, 'ChatGPT / AI Ads: ₹24,000 (40% of Digital)')" onmouseleave="hideSankeyTip()"/>
+                <rect x="780" y="170" width="20" height="27" rx="3" fill="#45B69C"/>
+                <text x="810" y="188" font-size="10" font-weight="700" fill="#4A2C17">ChatGPT / AI Ads ₹24k (8%)</text>
 
-                <!-- 4. Retailer + QC Offers ₹45,000 (15%) -->
-                <path d="M 70 240 C 350 240, 520 315, 800 315 L 800 360 C 520 360, 350 285, 70 285 Z" fill="url(#gradRetail)" class="sankey-band" onmousemove="showSankeyTip(event, 'Retailer & QC Offers: ₹45,000 (15%)')" onmouseleave="hideSankeyTip()"/>
-                <rect x="800" y="315" width="20" height="45" rx="3" fill="#9C89B8"/>
-                <text x="830" y="340" font-size="11" font-weight="800" fill="#4A2C17">Retailer + QC ₹45k (15%)</text>
+                <!-- 3. Sampling & Activations ₹45,000 (15% = 51px) -->
+                <path d="M 70 183 C 340 183, 500 208, 780 208 L 780 259 C 500 259, 340 234, 70 234 Z" fill="url(#gradSample)" class="sankey-band" onmousemove="showSankeyTip(event, 'Sampling & Activations: ₹45,000 (15%)')" onmouseleave="hideSankeyTip()"/>
+                <rect x="780" y="208" width="20" height="51" rx="3" fill="#E9C46A"/>
+                <text x="810" y="238" font-size="11" font-weight="800" fill="#4A2C17">Sampling & Activations ₹45,000 (15%)</text>
 
-                <!-- 5. Rebrand + K-Box + Design ₹30,000 (10%) -->
-                <path d="M 70 285 C 360 285, 540 372, 800 372 L 800 402 C 540 402, 360 315, 70 315 Z" fill="url(#gradDesign)" class="sankey-band" onmousemove="showSankeyTip(event, 'Rebrand + K-box + Design: ₹30,000 (10%)')" onmouseleave="hideSankeyTip()"/>
-                <rect x="800" y="372" width="20" height="30" rx="3" fill="#B0C4B1"/>
-                <text x="830" y="390" font-size="10" font-weight="700" fill="#4A2C17">Rebrand & Design ₹30k (10%)</text>
+                <!-- 4. Retail Expansion & QC ₹60,000 (20% = 68px) -->
+                <path d="M 70 234 C 340 234, 520 270, 780 270 L 780 338 C 520 338, 340 302, 70 302 Z" fill="url(#gradRetail)" class="sankey-band" onmousemove="showSankeyTip(event, 'Retail Expansion & QC: ₹60,000 (20%)')" onmouseleave="hideSankeyTip()"/>
+                <rect x="780" y="270" width="20" height="68" rx="3" fill="#9C89B8"/>
+                <text x="810" y="308" font-size="11" font-weight="800" fill="#4A2C17">Retail Expansion & QC ₹60,000 (20%)</text>
 
-                <!-- 6. Doomsday x Duo Launch Assets -->
-                <rect x="360" y="260" width="22" height="30" rx="3" fill="#0F5C4D"/>
-                <text x="371" y="305" font-size="9" font-weight="700" fill="#0F5C4D" text-anchor="middle">Month 1 Extra +₹30k</text>
+                <!-- 5. Product Innovation & rebrand ₹30,000 (10% = 34px) -->
+                <path d="M 70 302 C 350 302, 530 350, 780 350 L 780 384 C 530 384, 350 336, 70 336 Z" fill="url(#gradDesign)" class="sankey-band" onmousemove="showSankeyTip(event, 'Product Innovation & rebrand: ₹30,000 (10%)')" onmouseleave="hideSankeyTip()"/>
+                <rect x="780" y="350" width="20" height="34" rx="3" fill="#B0C4B1"/>
+                <text x="810" y="371" font-size="10.5" font-weight="700" fill="#4A2C17">Product Innovation & rebrand ₹30k (10%)</text>
 
-                <path d="M 70 315 C 240 315, 340 325, 520 325 L 520 335 C 340 335, 240 325, 70 325 Z" fill="url(#gradDoomsday)" class="sankey-band" onmousemove="showSankeyTip(event, 'Doomsday Base Allocation: ₹10,000 from budget')" onmouseleave="hideSankeyTip()"/>
-                <path d="M 382 270 C 440 270, 480 325, 520 325 L 520 355 C 480 355, 440 290, 382 290 Z" fill="url(#gradMonth1Extra)" class="sankey-band" onmousemove="showSankeyTip(event, 'Month 1 Extra Contribution: +₹30,000 added to launch assets')" onmouseleave="hideSankeyTip()"/>
-                
-                <rect x="520" y="325" width="20" height="40" rx="3" fill="#0F5C4D"/>
-                <text x="550" y="350" font-size="10" font-weight="800" fill="#0F5C4D">Doomsday × Duo Assets ₹40k</text>
+                <!-- 6. Panchayat x Duo Launch ₹25,000 (8.33% = 28.3px) -->
+                <path d="M 70 336 C 350 336, 520 395, 780 395 L 780 423 C 520 423, 350 364, 70 364 Z" fill="url(#gradPanchayat)" class="sankey-band" onmousemove="showSankeyTip(event, 'Panchayat x Duo Launch: ₹25,000 (8.33%) · Fulaera Chilli launch')" onmouseleave="hideSankeyTip()"/>
+                <rect x="780" y="395" width="20" height="28" rx="3" fill="#B3471A"/>
+                <text x="810" y="413" font-size="10.5" font-weight="800" fill="#B3471A">Panchayat x Duo Launch ₹25,000 (8.33%)</text>
 
-                <!-- 7. Contingency Reserve ₹5,000 -->
-                <path d="M 70 365 C 200 365, 300 395, 420 395 L 420 400 C 300 400, 200 370, 70 370 Z" fill="url(#gradReserve)" class="sankey-band" onmousemove="showSankeyTip(event, 'Contingency Reserve: ₹5,000')" onmouseleave="hideSankeyTip()"/>
-                <rect x="420" y="395" width="12" height="10" rx="2" fill="#A8DADC"/>
-                <text x="440" y="403" font-size="9" font-weight="700" fill="#4A2C17">Reserve ₹5k</text>
+                <!-- 7. Contingency Reserve ₹5,000 (1.67% = 5.7px) -->
+                <path d="M 70 364 C 280 364, 460 435, 780 435 L 780 441 C 460 441, 280 370, 70 370 Z" fill="url(#gradReserve)" class="sankey-band" onmousemove="showSankeyTip(event, 'Contingency Reserve: ₹5,000 (1.67%)')" onmouseleave="hideSankeyTip()"/>
+                <rect x="780" y="435" width="16" height="6" rx="2" fill="#A8DADC"/>
+                <text x="810" y="442" font-size="9" font-weight="700" fill="#4A2C17">Contingency Reserve ₹5k (1.67%)</text>
               </svg>
+            </div>
+
+            <!-- Structured Delhi NCR Budget Table Matching Image 1 Exactly -->
+            <div style="margin-top:28px; width:100%; border-top:1px solid var(--border-soft); padding-top:22px;">
+              <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:1.15rem; font-weight:800; color:var(--deep-brown);">₹3L Budget Allocation (Delhi NCR)</span>
+                  <span style="background:#FFF3E6; color:var(--orange); border:1px solid var(--border-accent); border-radius:999px; padding:2px 10px; font-size:0.75rem; font-weight:800;">VERIFIED TABLE</span>
+                </div>
+                <div style="font-size:0.82rem; color:var(--deep-brown); opacity:0.8;">
+                  100% matched to Delhi NCR regional launch model
+                </div>
+              </div>
+
+              <div style="overflow-x:auto;">
+                <table class="economics-table" style="width:100%; text-align:left;">
+                  <thead>
+                    <tr style="background:var(--orange); color:#FFFFFF;">
+                      <th style="padding:10px 16px; border-radius:8px 0 0 0;">Initiative</th>
+                      <th style="padding:10px 16px; text-align:right;">Allocation</th>
+                      <th style="padding:10px 16px; text-align:right; border-radius:0 8px 0 0;">Share</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-weight:700;">Nano-Creator UGC</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">₹75,000</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800; color:var(--orange);">25%</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">Digital & AI Ads</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">₹60,000</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">20%</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">Sampling & Activations</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">₹45,000</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">15%</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">Retail Expansion & QC</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">₹60,000</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">20%</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">Product Innovation & rebrand</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">₹30,000</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">10%</td>
+                    </tr>
+                    <tr style="background:#FFF9F5;">
+                      <td style="font-weight:800; color:var(--chilli-red);">Panchayat x Duo Launch</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800; color:var(--chilli-red);">₹25,000</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800; color:var(--chilli-red);">8.33%</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">Contingency Reserve</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">₹5,000</td>
+                      <td class="tabular-nums" style="text-align:right; font-weight:800;">1.67%</td>
+                    </tr>
+                    <tr style="background:#FFF0E6; font-weight:900; border-top:2px solid var(--orange);">
+                      <td style="color:var(--deep-brown); font-size:1rem;">Total</td>
+                      <td class="tabular-nums" style="text-align:right; color:var(--orange); font-size:1.05rem;">₹3,00,000</td>
+                      <td class="tabular-nums" style="text-align:right; color:var(--orange); font-size:1.05rem;">100%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ======================================================================
-           SCENE 7: LIMITED EDITION COLLAB (AVENGERS: DOOMSDAY)
+           SCENE 7: LIMITED EDITION COLLAB (CRUNCHUP X PANCHAYAT)
            ====================================================================== -->
       <section class="scene" id="scene7" aria-label="Scene 7: Limited Edition Collab">
         <div class="collab-section-wrap">
           <div class="section-heading-block">
-            <span class="licence-pending-tag">LICENCE PENDING · CONCEPT</span>
-            <h2 class="section-main-title">CrunchUp × Avengers: Doomsday</h2>
+            <span class="licence-pending-tag" style="background:#FFF3E6; color:var(--orange); border-color:var(--border-accent); font-weight:800; letter-spacing:0.04em;">
+              The Proven Playbook ( HOCCO X Mirzapur) Adaptation
+            </span>
+            <h2 class="section-main-title">CRUNCHUP X PANCHAYAT LIMITED EDITION*</h2>
             <p class="section-subtext">
-              High-impact cultural playbook modeled on Hocco × Mirzapur. Limited edition emerald & gold geometric sleeve with zero upfront license risk.
+              Culture-led limited edition, inspired by Panchayat, to drive trial, salience and youth engagement. Zero upfront licensing risk.
             </p>
           </div>
 
           <div class="collab-grid stagger-item">
-            <div class="collab-canister-card">
+            <!-- Left: Canister Visual & Gram Panchayat Phulera Styling -->
+            <div class="collab-canister-card" style="padding:24px 20px; display:flex; flex-direction:column; align-items:center;">
               <div class="light-sweep-overlay"></div>
 
-              <svg width="320" height="160" viewBox="0 0 320 160" fill="none">
-                <ellipse cx="160" cy="148" rx="110" ry="8" fill="rgba(74, 44, 23, 0.15)"/>
-                
-                <rect x="30" y="25" width="260" height="100" rx="8" fill="#0F5C4D"/>
-                
-                <path d="M30 25 L80 125 L130 25 L180 125 L230 25 L280 125" stroke="#C9A24B" stroke-width="2.5" opacity="0.6"/>
-                <circle cx="160" cy="75" r="32" fill="#094035" stroke="#C9A24B" stroke-width="3"/>
-                <text x="160" y="72" font-family="'Poppins', sans-serif" font-size="9" font-weight="900" fill="#C9A24B" text-anchor="middle" letter-spacing="1.5">CRUNCHUP</text>
-                <text x="160" y="85" font-family="'Poppins', sans-serif" font-size="11" font-weight="900" fill="#FFF3E6" text-anchor="middle" letter-spacing="2">LIMITED</text>
+              <div style="display:flex; justify-content:space-between; width:100%; align-items:center; margin-bottom:12px;">
+                <span style="font-size:0.75rem; font-weight:800; color:var(--orange); background:#FFF3E6; padding:3px 10px; border-radius:999px; border:1px solid var(--border-accent);">
+                  Pringles-Style Single Flavour Canister
+                </span>
+                <span style="font-size:0.75rem; font-weight:700; color:var(--deep-brown); opacity:0.8;">
+                  India release: 17 Dec 2026
+                </span>
+              </div>
 
-                <rect x="18" y="22" width="14" height="106" rx="7" fill="#C9A24B"/>
-                <rect x="288" y="22" width="14" height="106" rx="7" fill="#C9A24B"/>
+              <!-- Canister Illustration SVG Inspired by Playbook -->
+              <svg width="220" height="290" viewBox="0 0 220 290" fill="none" style="filter:drop-shadow(0 12px 24px rgba(74,44,23,0.18));">
+                <!-- Canister Body -->
+                <defs>
+                  <linearGradient id="canBodyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#FFFDF7"/>
+                    <stop offset="65%" stop-color="#FFF5E5"/>
+                    <stop offset="100%" stop-color="#EEDAC0"/>
+                  </linearGradient>
+                  <linearGradient id="canRimGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#FFFFFF"/>
+                    <stop offset="50%" stop-color="#E3D7C7"/>
+                    <stop offset="100%" stop-color="#B8A793"/>
+                  </linearGradient>
+                  <linearGradient id="chilliBaseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#C8321F"/>
+                    <stop offset="70%" stop-color="#A52010"/>
+                    <stop offset="100%" stop-color="#731206"/>
+                  </linearGradient>
+                </defs>
+
+                <!-- Floor Shadow -->
+                <ellipse cx="110" cy="282" rx="75" ry="7" fill="rgba(74, 44, 23, 0.2)"/>
+
+                <!-- Main Cylinder Body -->
+                <rect x="42" y="22" width="136" height="254" rx="14" fill="url(#canBodyGrad)" stroke="#E2D0BA" stroke-width="1.5"/>
+
+                <!-- Top Metal Lid & Rim -->
+                <rect x="38" y="16" width="144" height="12" rx="6" fill="url(#canRimGrad)" stroke="#B8A793" stroke-width="1"/>
+                <line x1="42" y1="28" x2="178" y2="28" stroke="#D3C3AF" stroke-width="1"/>
+
+                <!-- CrunchUp Brand Logo Mark -->
+                <g transform="translate(110, 52)">
+                  <rect x="-48" y="-14" width="96" height="26" rx="6" fill="#E8681F"/>
+                  <text x="0" y="4" font-family="'Poppins', sans-serif" font-size="12" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">CRUNCHUP</text>
+                  <!-- Little crunch spark -->
+                  <text x="38" y="-4" font-size="9" fill="#FFE5A3">✦</text>
+                </g>
+
+                <!-- "×" Symbol -->
+                <text x="110" y="78" font-family="'Poppins', sans-serif" font-size="11" font-weight="900" fill="#4A2C17" text-anchor="middle">×</text>
+
+                <!-- PANCHAYAT Box Banner -->
+                <g transform="translate(110, 96)">
+                  <rect x="-56" y="-12" width="112" height="24" rx="4" fill="#F4E6C3" stroke="#C9A24B" stroke-width="1.5"/>
+                  <text x="0" y="4" font-family="'Poppins', sans-serif" font-size="11" font-weight="900" fill="#B3471A" text-anchor="middle" letter-spacing="1.5">PANCHAYAT</text>
+                </g>
+
+                <!-- "ग्राम पंचायत फुलेरा" Building Artwork Frame -->
+                <g transform="translate(110, 150)">
+                  <rect x="-56" y="-34" width="112" height="66" rx="5" fill="#FAF0DC" stroke="#E3CFA8" stroke-width="1"/>
+                  
+                  <!-- Village Trees Background -->
+                  <circle cx="-42" cy="-24" r="10" fill="#6B8E23" opacity="0.6"/>
+                  <circle cx="42" cy="-24" r="10" fill="#6B8E23" opacity="0.6"/>
+
+                  <!-- Phulera Office Building Tiled Roof -->
+                  <polygon points="-46,-14 0,-24 46,-14" fill="#B3471A"/>
+                  <!-- Building Wall -->
+                  <rect x="-42" y="-14" width="84" height="42" fill="#E8BE78"/>
+                  
+                  <!-- "ग्राम पंचायत फुलेरा" Board -->
+                  <rect x="-30" y="-12" width="60" height="13" rx="2" fill="#FFFFFF" stroke="#4A2C17" stroke-width="0.8"/>
+                  <text x="0" y="-3" font-family="'Noto Sans Devanagari', sans-serif" font-size="7" font-weight="900" fill="#4A2C17" text-anchor="middle">ग्राम पंचायत फुलेरा</text>
+
+                  <!-- Door & Windows -->
+                  <rect x="-8" y="5" width="16" height="23" fill="#6B280E"/>
+                  <rect x="-34" y="2" width="14" height="12" fill="#4A2C17" opacity="0.85"/>
+                  <rect x="20" y="2" width="14" height="12" fill="#4A2C17" opacity="0.85"/>
+                </g>
+
+                <!-- Lower Section: FULAERA CHILLI Hero Flavour -->
+                <path d="M 42 196 Q 110 188 178 196 L 178 262 Q 110 274 42 262 Z" fill="url(#chilliBaseGrad)"/>
+                
+                <!-- Fulaera Chilli Script / Bold Wordmark -->
+                <text x="110" y="222" font-family="'Poppins', sans-serif" font-size="13" font-weight="900" fill="#FFFFFF" text-anchor="middle" font-style="italic">Fulaera</text>
+                <text x="110" y="240" font-family="'Poppins', sans-serif" font-size="14" font-weight="900" fill="#FFE5A3" text-anchor="middle">Chilli</text>
+
+                <!-- Bottom Metal Base Rim -->
+                <rect x="42" y="266" width="136" height="10" rx="4" fill="url(#canRimGrad)" stroke="#B8A793" stroke-width="0.8"/>
               </svg>
 
-              <div class="collab-timeline">
-                <div class="timeline-node">Month 1 Gate</div>
-                <span>➔</span>
-                <div class="timeline-node">Launch Assets</div>
-                <span>➔</span>
-                <div class="timeline-node highlight">India Release 17 Dec 2026</div>
+              <!-- Snack Bowl & Red Chilli Accent -->
+              <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:6px; font-size:0.85rem; font-weight:800; color:var(--chilli-red);">
+                <span>🥣 Crisp Desi Crackle</span>
+                <span>•</span>
+                <span>🌶️ Whole Sun-Dried Red Chilli</span>
               </div>
+
+              <!-- Action Timeline & Reference Asset Trigger -->
+              <div class="collab-timeline" style="margin-top:16px; width:100%;">
+                <div class="timeline-node">Panchayat Buzz</div>
+                <span>➔</span>
+                <div class="timeline-node highlight">Fulaera Chilli Drop</div>
+                <span>➔</span>
+                <div class="timeline-node">10-Min QC Rollout</div>
+              </div>
+
+              <button class="nav-btn" style="margin-top:14px; font-size:0.8rem; padding:6px 16px;" onclick="openInAppModal('📜 Verified Playbook Reference: HOCCO × Mirzapur Adaptation', '<div style=\'text-align:center;\'><p style=\'margin-bottom:12px;\'><strong>CrunchUp × Panchayat Limited Edition Playbook Model</strong><br/>Cultural merchandise playbook reference with zero upfront payment & ₹25.7 contribution/unit.</p><img src=\'/assets/aistudio/image_17413c3a.png\' alt=\'Panchayat Playbook Sheet\' style=\'width:100%; max-height:280px; object-fit:contain; border-radius:12px; border:1px solid var(--border-soft); box-shadow:0 4px 14px rgba(74,44,23,0.1);\' /></div>')">
+                <span>🔍 View Playbook Source Sheet</span>
+              </button>
             </div>
 
-            <div class="unit-economics-card">
-              <table class="economics-table">
-                <tbody>
-                  <tr>
-                    <td>Format & SKU</td>
-                    <td>Pringles-style Duo Canister (Dual Spiced Glaze)</td>
-                  </tr>
-                  <tr>
-                    <td>Window</td>
-                    <td>Pre-release Q4 2026 / India release 17 Dec 2026</td>
-                  </tr>
-                  <tr>
-                    <td>Playbook Reference</td>
-                    <td>Hocco × Mirzapur (limited edition, ₹100/5-pack, QC + GT)</td>
-                  </tr>
-                  <tr>
-                    <td>Deal Structure</td>
-                    <td>Royalty ~8%, Zero Upfront Payment</td>
-                  </tr>
-                  <tr>
-                    <td>Revenue per Unit</td>
-                    <td class="tabular-nums">₹104.00</td>
-                  </tr>
-                  <tr>
-                    <td>Variable Cost per Unit</td>
-                    <td class="tabular-nums">₹70.00</td>
-                  </tr>
-                  <tr>
-                    <td>Royalty (8%)</td>
-                    <td class="tabular-nums">₹8.30</td>
-                  </tr>
-                  <tr>
-                    <td>Contribution per Unit</td>
-                    <td class="tabular-nums">≈ ₹25.70</td>
-                  </tr>
-                  <tr>
-                    <td>Pilot Batch (2,000 units)</td>
-                    <td class="tabular-nums">≈ ₹51,400</td>
-                  </tr>
-                  <tr>
-                    <td>Less Launch Assets</td>
-                    <td class="tabular-nums" style="color:var(--chilli-red);">−₹40,000</td>
-                  </tr>
-                  <tr class="row-net-positive">
-                    <td>Net Contribution</td>
-                    <td class="tabular-nums">+₹11,400</td>
-                  </tr>
-                </tbody>
-              </table>
+            <!-- Right: Exact Unit Economics Table from Image 2 -->
+            <div class="unit-economics-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                  <span style="font-size:1.15rem; font-weight:800; color:var(--deep-brown);">Unit Economics & Commercial Gate</span>
+                  <span style="background:#FFF3E6; color:var(--orange); border:1px solid var(--border-accent); border-radius:999px; padding:2px 10px; font-size:0.75rem; font-weight:800;">VERIFIED ECONOMICS</span>
+                </div>
 
-              <p style="font-size:0.78rem; color:var(--deep-brown); opacity:0.7; margin-top:14px; text-align:center;">
-                * Illustrative assumptions; licence terms undisclosed. Strict adherence to non-character geometric branding.
-              </p>
+                <table class="economics-table">
+                  <thead>
+                    <tr style="background:var(--orange); color:#FFFFFF;">
+                      <th style="padding:9px 14px; text-align:left; border-radius:8px 0 0 0;">Item</th>
+                      <th style="padding:9px 14px; text-align:right; border-radius:0 8px 0 0;">Detail</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-weight:700;">Format</td>
+                      <td>Pringles-style canister, single flavour</td>
+                    </tr>
+                    <tr style="background:#FFF8F0;">
+                      <td style="font-weight:700; color:var(--chilli-red);">Flavour</td>
+                      <td style="font-weight:800; color:var(--chilli-red);">Fulaera Chilli (Panchayat Edition)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">Window</td>
+                      <td>India release: 17 Dec 2026</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">Deal structure</td>
+                      <td>Royalty ~8% on sales, zero upfront</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">Revenue received / unit</td>
+                      <td class="tabular-nums">₹104 (MRP ₹149)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">Variable cost / unit</td>
+                      <td class="tabular-nums">₹70</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">Royalty / unit</td>
+                      <td class="tabular-nums">₹8.3</td>
+                    </tr>
+                    <tr style="background:rgba(227,169,43,0.16); font-weight:800;">
+                      <td style="color:var(--deep-brown);">Contribution / unit</td>
+                      <td class="tabular-nums" style="color:var(--deep-brown);">≈ ₹25.7</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700;">2,000 units</td>
+                      <td class="tabular-nums">≈ ₹51,400</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700; color:var(--chilli-red);">Less launch assets</td>
+                      <td class="tabular-nums" style="color:var(--chilli-red); font-weight:800;">−₹40,000</td>
+                    </tr>
+                    <tr class="row-net-positive" style="background:#EBF5F0; font-weight:900;">
+                      <td style="color:var(--emerald);">Net</td>
+                      <td class="tabular-nums" style="color:var(--emerald); font-size:1.05rem;">≈ +₹11,000</td>
+                    </tr>
+                    <tr style="background:#FFF3E6; font-size:0.88rem; border-top:1.5px solid var(--border-accent);">
+                      <td style="font-weight:800; color:var(--deep-brown);">Gate</td>
+                      <td style="font-weight:800; color:var(--orange);">Month 1: ≥ 22,000 packs & ≥ 100 outlets</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Banner Caption matching Image 2 verbatim -->
+              <div style="background:#FFF3E6; border:1px solid var(--border-accent); border-radius:12px; padding:12px 16px; margin-top:16px; text-align:center; font-size:0.88rem; font-weight:700; color:var(--deep-brown); line-height:1.45;">
+                Culture-led limited edition, inspired by Panchayat, to drive trial, salience and youth engagement.
+              </div>
             </div>
           </div>
         </div>
@@ -3464,7 +3771,12 @@
       }
 
       function inspectFlavourModal(flavour) {
-        if (flavour === 'delulu') {
+        if (flavour === 'fulaera') {
+          openInAppModal(
+            '🌶️ Fulaera Chilli (Panchayat Edition)',
+            '<strong>Profile:</strong> Slow-roasted Phulera village dry red chilli, earthy desi spices, and bold crisp crackle.<br/><br/><strong>Playbook:</strong> The Proven Playbook (HOCCO × Mirzapur) Adaptation.<br/><strong>Format:</strong> Pringles-style canister, single flavour.<br/><strong>Window:</strong> India release: 17 Dec 2026.<br/><strong>Commercials:</strong> MRP ₹149 (Revenue received ₹104) · Royalty ~8% on sales, zero upfront payment.<br/><strong>Unit Contribution:</strong> ≈ ₹25.70 (Net ₹11,000 on pilot 2,000 units after ₹40k launch assets).'
+          );
+        } else if (flavour === 'delulu') {
           openInAppModal(
             '🌶️ Delulu Chilli (Hero Flavor)',
             '<strong>Profile:</strong> Kashmiri mirch warmth, sweet roasted tomato, and habanero punch.<br/><br/><strong>Audience:</strong> Gen Z & Late-night young office teams.<br/><strong>Format:</strong> Duo Canister (Right side) & 40g Grab Pouch.<br/><strong>Crunch Index:</strong> 9.8 / 10'
@@ -3755,20 +4067,18 @@
       }
 
       // ======================================================================
-      // SCENE 5: NANO UGC ENGINE COUNTER & PERSONA CYCLING
       // ======================================================================
-      let ugcInterval = null;
+      // SCENE 5: NANO UGC ENGINE & OFFICE-TO-OUTER NETWORK TRANSMISSION
+      // ======================================================================
       let personaTimer = null;
       let personaState = 0;
 
       function startUgcCounters() {
+        // Steady, verified organic conversions count as requested (no erratic constant increments)
         const counter = document.getElementById('ugcOrdersCount');
-        let count = 1420;
-        if (ugcInterval) clearInterval(ugcInterval);
-        ugcInterval = setInterval(() => {
-          count += Math.floor(Math.random() * 45 + 15);
-          if (counter) counter.textContent = count.toLocaleString('en-IN');
-        }, 120);
+        if (counter) {
+          counter.textContent = '1,420';
+        }
 
         if (personaTimer) clearInterval(personaTimer);
         personaTimer = setInterval(() => {
@@ -3776,13 +4086,92 @@
           const label = document.getElementById('personaCycleLabel');
           const bubble = document.getElementById('reelCommentBubble');
           if (personaState === 0) {
-            if (label) label.textContent = "Active Persona: 🎓 Campus Creator (Hostel Dorm)";
-            if (bubble) bubble.textContent = '"Hostel study room split! Masala side is elite 🔥"';
+            if (label) label.textContent = "Active Reel: 🏢 Tech Park Creator (Desk Break Viral Hit)";
+            if (bubble) bubble.textContent = '"4 PM slump saved with my desk buddy! Masala side is elite 🔥"';
           } else {
-            if (label) label.textContent = "Active Persona: 🏢 Tech Park HR Creator (Desk Break)";
-            if (bubble) bubble.textContent = '"4 PM slump saved with my desk buddy! No mess on laptops"';
+            if (label) label.textContent = "Active Reel: 💻 Desk Buddy UGC (UPI Split in Action)";
+            if (bubble) bubble.textContent = '"Ek side tumhari, ek meri! ₹20 split done in 5 seconds ⚡"';
           }
-        }, 4000);
+        }, 4500);
+      }
+
+      // Interactive Node Inspection for Office Web (Solid Lines) & Outer Networks (Dotted Lines)
+      function inspectNetworkNode(nodeKey) {
+        playCrunchSound('pop');
+        const nodeData = {
+          // Inner Office Web Nodes (Solid Lines)
+          dev: {
+            title: '💻 Desk Buddy (Office Node)',
+            body: '<strong>Internal Office Web · Connected via Normal Solid Line</strong><br/><br/>• <strong>Role:</strong> Watched the viral 15s reel at 3:55 PM.<br/>• <strong>Action:</strong> Immediately split a Duo Canister with adjacent UX Designer.<br/>• <strong>Intra-Office Connection:</strong> Direct desk-to-desk snack break sharing without leaving workstation.<br/>• <strong>Outer Ripple:</strong> Carries half canister home to flatmates circle in the evening.'
+          },
+          designer: {
+            title: '🎨 UX Designer (Office Node)',
+            body: '<strong>Internal Office Web · Connected via Normal Solid Line</strong><br/><br/>• <strong>Role:</strong> Co-split the first canister with Desk Buddy.<br/>• <strong>Action:</strong> Loved the terracotta/canister packaging aesthetics and shared on office Slack #snacks channel.<br/>• <strong>Intra-Office Connection:</strong> Normal solid lines transmit interest to Tech Lead and Product Manager.<br/>• <strong>Outer Ripple:</strong> Posts aesthetic desk photo to college design alumni WhatsApp group.'
+          },
+          techlead: {
+            title: '⚡ Tech Lead (Office Node)',
+            body: '<strong>Internal Office Web · Connected via Normal Solid Line</strong><br/><br/>• <strong>Role:</strong> Office floor senior champion.<br/>• <strong>Action:</strong> Approves ordering CrunchUp Duo for all team standups.<br/>• <strong>Intra-Office Connection:</strong> Connected directly to 8 engineers across desks.<br/>• <strong>Outer Ripple:</strong> Recommends to ex-colleagues at neighbouring Whitefield tech park.'
+          },
+          pm: {
+            title: '📊 Product Manager (Office Node)',
+            body: '<strong>Internal Office Web · Connected via Normal Solid Line</strong><br/><br/>• <strong>Role:</strong> Sprint review host.<br/>• <strong>Action:</strong> Keeps Delulu Chilli canisters stacked at meeting room entrance.<br/>• <strong>Intra-Office Connection:</strong> Cross-functional desk bridging.<br/>• <strong>Outer Ripple:</strong> Recommends to Bangalore tech run club & weekend gym friends.'
+          },
+          hr: {
+            title: '☕ HR Specialist (Office Node)',
+            body: '<strong>Internal Office Web · Connected via Normal Solid Line</strong><br/><br/>• <strong>Role:</strong> Employee engagement & pantry manager.<br/>• <strong>Action:</strong> Organises "Duo Friday" snack pairing lounge.<br/>• <strong>Intra-Office Connection:</strong> Bridges all departments on the office floor.<br/>• <strong>Outer Ripple:</strong> Shares in HR community circles across multiple corporate hubs.'
+          },
+
+          // Outer Network Nodes (Dotted Lines - "वहां से चीज फैल रही है")
+          alumni: {
+            title: '🎓 Hostel Alumni Network (Outer Node)',
+            body: '<strong>Outer Network Spillover · Connected via Dotted Line</strong><br/><br/>• <strong>Origin:</strong> Office colleagues sharing reel & referral links to college batchmates.<br/>• <strong>Transmission:</strong> Dotted line transmission from Tech Lead & Desk Buddy.<br/>• <strong>Propagation Effect:</strong> Reaches 240+ alumni across 12 cities; drives midnight Quick Commerce orders in student dorms and shared flats.<br/>• <em>"वहां से चीज फैल रही है!"</em>'
+          },
+          flatmates: {
+            title: '🏠 Flatmates Circle (Outer Node)',
+            body: '<strong>Outer Network Spillover · Connected via Dotted Line</strong><br/><br/>• <strong>Origin:</strong> Office colleague brings home an unopened Duo half after work.<br/>• <strong>Transmission:</strong> Dotted line transmission from Dev Desk Buddy & UX Designer.<br/>• <strong>Propagation Effect:</strong> Flatmates try the Delulu Chilli flavour, subscribe to weekly QC multi-packs, and split grocery carts.'
+          },
+          crosstech: {
+            title: '🏢 Neighbouring Tech Parks (Outer Node)',
+            body: '<strong>Outer Network Spillover · Connected via Dotted Line</strong><br/><br/>• <strong>Origin:</strong> Cross-company lunch meetups & friend circles.<br/>• <strong>Transmission:</strong> Dotted line bridge across tech park cafeterias.<br/>• <strong>Propagation Effect:</strong> Peer validation spreads across companies within a 5 km radius, boosting dark store inventory turn.'
+          },
+          gym: {
+            title: '🏃 Gym & Weekend Sports Groups (Outer Node)',
+            body: '<strong>Outer Network Spillover · Connected via Dotted Line</strong><br/><br/>• <strong>Origin:</strong> Office workers taking lightweight Duo Canister for post-workout hangouts.<br/>• <strong>Transmission:</strong> Dotted line transmission from Product Manager.<br/>• <strong>Propagation Effect:</strong> Informal peer sampling among fitness enthusiasts who want portion-controlled snacking.'
+          },
+          campus: {
+            title: '📱 Campus WhatsApp Communities (Outer Node)',
+            body: '<strong>Outer Network Spillover · Connected via Dotted Line</strong><br/><br/>• <strong>Origin:</strong> Younger junior hires and interns forwarding reels to university clubs.<br/>• <strong>Transmission:</strong> Dotted line viral cascade.<br/>• <strong>Propagation Effect:</strong> Viral memes, Instagram story reshares, and campus ambassador UGC drops.'
+          }
+        };
+
+        const node = nodeData[nodeKey];
+        if (node) {
+          openInAppModal(node.title, node.body);
+        }
+      }
+
+      // Replay Viral Ripple Animation across Network
+      function triggerNetworkRipple() {
+        playCrunchSound('swipe');
+        const ripples = document.querySelectorAll('#outerRipplesLayer circle');
+        ripples.forEach(r => {
+          r.setAttribute('stroke-width', '3');
+          r.style.transition = 'stroke-width 300ms ease';
+          setTimeout(() => {
+            r.setAttribute('stroke-width', '1.5');
+          }, 800);
+        });
+
+        // Flash notification chip
+        const chip = document.querySelector('.orders-counter-chip');
+        if (chip) {
+          chip.style.transform = 'scale(1.08)';
+          chip.style.borderColor = 'var(--orange)';
+          chip.style.transition = 'all 240ms ease';
+          setTimeout(() => {
+            chip.style.transform = 'scale(1)';
+          }, 400);
+        }
       }
 
       // ======================================================================
